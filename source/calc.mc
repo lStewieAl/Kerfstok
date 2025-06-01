@@ -160,7 +160,7 @@ function tokenize(chars, len) {
     for (; i < len; i++) {
       el = chars[i];
       if (el >= '0' && el <= '9') {
-        get = get * 10 + (el.toNumber() - '0');
+        get = get * 10 + (el.toNumber() - 48); // '0'
       } else {
         if (el == '.') {
           if (point != nopoint) {
