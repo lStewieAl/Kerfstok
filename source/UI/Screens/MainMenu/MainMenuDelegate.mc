@@ -19,7 +19,7 @@ class MainMenuDelegate extends WatchUi.BehaviorDelegate {
   }
 
   function onKey(keyEvent as WatchUi.KeyEvent) as Lang.Boolean {
-    if (alarmactive) {
+    if (isAlarmActive) {
       stopalarm();
     } else {
       askstopsport();

@@ -73,7 +73,7 @@ class HistDelegate extends WatchUi.BehaviorDelegate {
   }
   
   function onKey(keyEvent) {
-    if (alarmactive) {
+    if (isAlarmActive) {
       stopalarm();
     } else {
       WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);

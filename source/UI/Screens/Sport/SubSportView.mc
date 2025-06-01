@@ -73,7 +73,7 @@ class SubSportDelegate extends WatchUi.BehaviorDelegate {
   }
 
   function onKey(keyEvent) {
-    if (alarmactive) {
+    if (isAlarmActive) {
       stopalarm();
     }
     return true;

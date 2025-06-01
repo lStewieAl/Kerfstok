@@ -40,7 +40,7 @@ class VarDelegate extends WatchUi.BehaviorDelegate {
   }
 
   function onKey(keyEvent) {
-    if (alarmactive) {
+    if (isAlarmActive) {
       stopalarm();
     } else {
       doer.onleft();

@@ -2,12 +2,6 @@ using Toybox.System;
 using Toybox.Communications;
 using Toybox.Time;
 using Toybox.SensorHistory;
-// Create a method to get the SensorHistoryIterator object
-
-// Store the iterator info in a variable. The options are 'null' in
-// this case so the entire available history is returned with the
-// newest samples returned first.
-
 class CommListener extends Communications.ConnectionListener {
   function initialize() {
     Communications.ConnectionListener.initialize();

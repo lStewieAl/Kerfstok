@@ -104,7 +104,7 @@ class SportStartDelegate extends WatchUi.BehaviorDelegate {
       if (actinfo.elapsedDistance != null) {
         var dist = actinfo.elapsedDistance;
         if (dist > nextlap && activityrecord.addLap()) {
-          clearbeep();
+          clearBeepPattern();
           var nu = Time.now().value();
           mklapstr(nu - prevautolap);
           prevautolap = nu;
@@ -234,7 +234,7 @@ class SportStartDelegate extends WatchUi.BehaviorDelegate {
   }
 
   function onKey(keyEvent) {
-    if (alarmactive) {
+    if (isAlarmActive) {
       stopalarm();
     } else {
       startsport();

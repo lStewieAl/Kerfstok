@@ -71,7 +71,7 @@ class GlucoseDelegate extends WatchUi.BehaviorDelegate {
   }
 
   function onKey(keyEvent) {
-    if (alarmactive) {
+    if (isAlarmActive) {
       stopalarm();
     } else {
       askstopsport();

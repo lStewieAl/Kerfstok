@@ -1,0 +1,74 @@
+using Toybox.Attention;
+using Toybox.Lang;
+
+function vibrate(profile as Lang.Array<Attention.VibeProfile>) as Void {
+  if (Attention has :vibrate) {
+    Attention.vibrate(profile);
+  }
+}
+
+const VIBE_PROFILE_200MS_FULL_POWER = [new Attention.VibeProfile(100, 200)];
+const VIBE_PROFILE_BEEP2 = [
+  new Attention.VibeProfile(75, 50),
+  new Attention.VibeProfile(50, 50),
+  new Attention.VibeProfile(25, 50),
+  new Attention.VibeProfile(100, 50),
+];
+const VIBE_PROFILE_BEEP3 = [
+  new Attention.VibeProfile(100, 50),
+  new Attention.VibeProfile(10, 50),
+  new Attention.VibeProfile(100, 50),
+  new Attention.VibeProfile(10, 50),
+  new Attention.VibeProfile(100, 50),
+];
+const VIBE_PROFILE_BEEP4 = [
+  new Attention.VibeProfile(25, 66),
+  new Attention.VibeProfile(100, 66),
+  new Attention.VibeProfile(25, 66),
+];
+
+var _clearVibeData as Lang.Array<Attention.VibeProfile>? = null; // Initialized on first use
+function getClearVibeData() as Lang.Array<Attention.VibeProfile> {
+  if (_clearVibeData == null) {
+    _clearVibeData = [
+      new Attention.VibeProfile(50, 100),
+      new Attention.VibeProfile(100, 500),
+      new Attention.VibeProfile(50, 50),
+      new Attention.VibeProfile(100, 1000),
+      new Attention.VibeProfile(50, 100),
+      new Attention.VibeProfile(100, 500),
+      new Attention.VibeProfile(50, 50),
+      new Attention.VibeProfile(100, 500),
+    ];
+  }
+  return _clearVibeData;
+}
+
+public function beep1() as Void { vibrate(VIBE_PROFILE_200MS_FULL_POWER); }
+public function beep2() as Void { vibrate(VIBE_PROFILE_BEEP2); }
+public function beep3() as Void { vibrate(VIBE_PROFILE_BEEP3); }
+public function beep4() as Void { vibrate(VIBE_PROFILE_BEEP4); }
+public function clearBeepPattern() as Void { vibrate(getClearVibeData()); }
+
+function generatealarm() as Void {
+  for (var i = 0; i < 6; ++i) {
+    clearBeepPattern();
+    if (!isAlarmActive) {
+      return;
+    }
+  }
+}
+
+function startGeneratedAlarm() as Void {
+  isAlarmActive = true;
+  generatealarm();
+}
+
+function stopGeneratedAlarm() as Void {
+  if (isAlarmActive) {
+    isAlarmActive = false;
+    if (Attention has :vibrate) {
+      Attention.vibrate([new Attention.VibeProfile(0, 1)]); // 0 power for 1ms to clear vibration
+    }
+  }
+}

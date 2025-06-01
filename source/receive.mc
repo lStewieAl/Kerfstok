@@ -24,18 +24,18 @@ function setglucose(gegs) {
   }
   var alarm = gegs[4];
   if (alarm == 0) {
-    alarmactive = false;
+    isAlarmActive = false;
     glucoserate = gegs[3];
   } else {
     var nooff = alarm & 0x07;
     if ((alarm & 0x08) != 0x0) {
       if ((alarm & 0x10) != 0x0) {
-        StartAlarm();
+        startGeneratedAlarm();
       } else {
-        clearbeep();
-        clearbeep();
-        clearbeep();
-        clearbeep();
+        clearBeepPattern();
+        clearBeepPattern();
+        clearBeepPattern();
+        clearBeepPattern();
       }
     }
     switch (nooff) {
@@ -99,7 +99,7 @@ function processIncomingMessage(data) {
             startglucose();
             return;
           case STOPALARM:
-            alarmactive = false;
+            isAlarmActive = false;
             Communications.transmit([GOTSTOPALARM], null, new CommListener());
             return;
           default:

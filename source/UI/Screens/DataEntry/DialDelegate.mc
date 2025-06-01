@@ -151,7 +151,7 @@ class DialDelegate extends WatchUi.BehaviorDelegate {
   }
 
   function onKey(keyEvent) {
-    if (alarmactive) {
+    if (isAlarmActive) {
       stopalarm();
     } else {
       if (nums.nums.size() > nummax - 2) {

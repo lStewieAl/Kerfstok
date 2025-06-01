@@ -35,7 +35,7 @@ var toshowspeed = (60.0 * 60.0) / 1000.0;
 var toshowdistance = 1.0 / 1000.0;
 var showdistanceunit = false;
 
-var alarmactive = false;
+var isAlarmActive = false;
 
 class init {
   const mile = 1609.34;
@@ -43,7 +43,7 @@ class init {
   function timerCallback() as Void {
     toshow = 1;
     WatchUi.requestUpdate();
-    if (alarmactive) {
+    if (isAlarmActive) {
       generatealarm();
     }
   }
