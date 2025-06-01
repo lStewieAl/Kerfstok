@@ -108,3 +108,8 @@ function startalarm() {
   alarmactive = true;
   generatealarm();
 }
+
+function StopAlarm() as Void {
+  alarmactive = false;
+  Attention.vibrate([new Attention.VibeProfile(0, 1)]); // 0 power for 1ms to clear vibration
+}

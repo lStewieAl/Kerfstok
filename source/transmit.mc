@@ -93,6 +93,6 @@ function netdelete(base, num, end) {
 }
 
 function stopalarm() {
-  alarmactive = false;
+  StopAlarm();
   Communications.transmit([STOPALARM], null, new CommListener());
 }
