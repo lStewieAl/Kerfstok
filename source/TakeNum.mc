@@ -7,187 +7,170 @@ using Toybox.StringUtil;
 using Toybox.Application.Storage;
 using Toybox.Position;
 
-
-
 function receivecolor(num) {
-   Storage.setValue("reversecolor",num);
-   setcolor(num);
-   Communications.transmit([COLORBLACK], null,  new CommListener());   
-   }
+  Storage.setValue("reversecolor", num);
+  setcolor(num);
+  Communications.transmit([COLORBLACK], null, new CommListener());
+}
+
 function ackReceived() {
-   Communications.transmit([COLORBLACK], null,  new CommListener());   
-   }
+  Communications.transmit([COLORBLACK], null, new CommListener());
+}
 
-var initer=null;
-var venusq=false;
-var venu=false;
-var venusq2=false;
-var fenix7=false;
-var fenix8=false;
-var fenixe=false;
-var marq2=false;
-var edgeexplore2=false;
-var edge1040=false;
-var edge830=false;
-var edge840=false;
-var fr965=false;
-var fr165=false;
-var mk3=false;
+var initer = null;
+var venusq = false;
+var venu = false;
+var venusq2 = false;
+var fenix7 = false;
+var fenix8 = false;
+var fenixe = false;
+var marq2 = false;
+var edgeexplore2 = false;
+var edge1040 = false;
+var edge830 = false;
+var edge840 = false;
+var fr965 = false;
+var fr165 = false;
+var mk3 = false;
 class TakeNumApp extends Application.AppBase {
-    private var methodmail as Method(mailIter as  MailboxIterator) as Void;
-//    private var methodphone     as Method(msg as Message) as Void;
-    private var methodphone     as Method(msg as PhoneAppMessage) as Void;
+  private var methodmail as (Method(mailIter as MailboxIterator) as Void);
+  private var methodphone as (Method(msg as PhoneAppMessage) as Void);
+  public function onMail(mailIter as MailboxIterator) as Void {
+    var mail = mailIter.next();
 
-
-
-    public function onMail(mailIter as MailboxIterator) as Void {
-        var mail = mailIter.next();
-
-        while(mail != null) {
+    while (mail != null) {
       oninput(mail);
-            mail = mailIter.next();
-        }
-
-        Communications.emptyMailbox();
-        WatchUi.requestUpdate();
+      mail = mailIter.next();
     }
 
-    public function onPhone(msg as PhoneAppMessage) as Void {
-        var data = msg.data;
-   oninput(data);
-        WatchUi.requestUpdate();
-    }
-function initmessages() {
-   if(Communications has :registerForPhoneAppMessages) {
+    Communications.emptyMailbox();
+    WatchUi.requestUpdate();
+  }
+
+  public function onPhone(msg as PhoneAppMessage) as Void {
+    var data = msg.data;
+    oninput(data);
+    WatchUi.requestUpdate();
+  }
+
+  function initmessages() {
+    if (Communications has :registerForPhoneAppMessages) {
       System.println("registerForPhoneAppMessages");
-       methodphone=method(:onPhone);
-       Communications.registerForPhoneAppMessages(methodphone);
-      }    
-      else {
-      if(Communications has :setMailboxListener) {
-         System.println("setMailboxListener");
-         methodmail= method(:onMail);
-         Communications.setMailboxListener(methodmail);
-         } 
+      methodphone = method(:onPhone);
+      Communications.registerForPhoneAppMessages(methodphone);
+    } else {
+      if (Communications has :setMailboxListener) {
+        System.println("setMailboxListener");
+        methodmail = method(:onMail);
+        Communications.setMailboxListener(methodmail);
       }
-      System.println("end initmessages");
-   }
+    }
+    System.println("end initmessages");
+  }
 
-//    function onPosition(info) { }
-
-function initialize() {
+  function initialize() {
     AppBase.initialize();
-   if(WatchUi.loadResource(Rez.Strings.venusq).equals("y")) {
-      venusq=true;
-      }
-   else {
-      if(WatchUi.loadResource(Rez.Strings.venusq2).equals("y")) {
-         venusq2=true;
-         }
-      else {
-         if(WatchUi.loadResource(Rez.Strings.venu).equals("y")) {
-            venu=true;
-            }
-         else {
-            if(WatchUi.loadResource(Rez.Strings.fenix7).equals("y")) {
-               fenix7=true;
-               }
-            else {
-               if(WatchUi.loadResource(Rez.Strings.marq2).equals("y")) {
-                  marq2=true;
-                  }
-               else {
-                  if(WatchUi.loadResource(Rez.Strings.edgeexplore2).equals("y")) {
-                     edgeexplore2=true;
-                     histrows=7;
-                     }
-                  else {
-                     if(WatchUi.loadResource(Rez.Strings.edge830).equals("y")) {
-                         histrows=5;
-                        edge830=true;
-                        }
-                     else {
-                        if(WatchUi.loadResource(Rez.Strings.fr965).equals("y")) {
-                           fr965=true;
-                           }
-                        else {
-                            if(WatchUi.loadResource(Rez.Strings.mk3).equals("y")) {
-                                mk3=true;
-                                }
-                              else {
-                                if(WatchUi.loadResource(Rez.Strings.fenix8).equals("y")) {
-                                        fenix8=true;
-                                        }
-                                else {
-                                    if(WatchUi.loadResource(Rez.Strings.fenixe).equals("y")) {
-                                            fenixe=true;
-                                            }
-                                        else  {
-                                          if(WatchUi.loadResource(Rez.Strings.edge1040).equals("y")) {
-                                            edge1040=true;
-                                             histrows=8;
-                                             }
-                                             else {
-                                                 if(WatchUi.loadResource(Rez.Strings.edge840).equals("y")) {
-                                                    histrows=5;
-                                                    edge840=true;
-                                                    edge830=true;
-                                                    }
-                                                 else {
-                        if(WatchUi.loadResource(Rez.Strings.fr165).equals("y")) {
-                           fr965=true;
-                           fr165=true;
-                           }
-                           }
+    if (WatchUi.loadResource(Rez.Strings.venusq).equals("y")) {
+      venusq = true;
+    } else {
+      if (WatchUi.loadResource(Rez.Strings.venusq2).equals("y")) {
+        venusq2 = true;
+      } else {
+        if (WatchUi.loadResource(Rez.Strings.venu).equals("y")) {
+          venu = true;
+        } else {
+          if (WatchUi.loadResource(Rez.Strings.fenix7).equals("y")) {
+            fenix7 = true;
+          } else {
+            if (WatchUi.loadResource(Rez.Strings.marq2).equals("y")) {
+              marq2 = true;
+            } else {
+              if (WatchUi.loadResource(Rez.Strings.edgeexplore2).equals("y")) {
+                edgeexplore2 = true;
+                histrows = 7;
+              } else {
+                if (WatchUi.loadResource(Rez.Strings.edge830).equals("y")) {
+                  histrows = 5;
+                  edge830 = true;
+                } else {
+                  if (WatchUi.loadResource(Rez.Strings.fr965).equals("y")) {
+                    fr965 = true;
+                  } else {
+                    if (WatchUi.loadResource(Rez.Strings.mk3).equals("y")) {
+                      mk3 = true;
+                    } else {
+                      if (
+                        WatchUi.loadResource(Rez.Strings.fenix8).equals("y")
+                      ) {
+                        fenix8 = true;
+                      } else {
+                        if (
+                          WatchUi.loadResource(Rez.Strings.fenixe).equals("y")
+                        ) {
+                          fenixe = true;
+                        } else {
+                          if (
+                            WatchUi.loadResource(Rez.Strings.edge1040).equals(
+                              "y"
+                            )
+                          ) {
+                            edge1040 = true;
+                            histrows = 8;
+                          } else {
+                            if (
+                              WatchUi.loadResource(Rez.Strings.edge840).equals(
+                                "y"
+                              )
+                            ) {
+                              histrows = 5;
+                              edge840 = true;
+                              edge830 = true;
+                            } else {
+                              if (
+                                WatchUi.loadResource(Rez.Strings.fr165).equals(
+                                  "y"
+                                )
+                              ) {
+                                fr965 = true;
+                                fr165 = true;
+                              }
                             }
-                     }
-                                        }
-                                   }
-                             }
-
+                          }
                         }
-                     }
+                      }
+                    }
                   }
-               }
+                }
+              }
             }
-         }
-      }
-//   venu=true;
-
-   initer =new init();
-   initer.initall();
-   initmessages();
-    }
-
-
-
-
-    function onStop(state) {
-       stopglucose();
-//   sportsave();
-   Storage.setValue("glunits",glunits);
-       for(var i=0;i<numset.size();i++) {
-      var nr=numset[i];
-      if(memnum[nr].size()) {
-         Storage.setValue("memnum"+nr,StringUtil.charArrayToString(memnum[nr]));
-         }
-      else {
-         Storage.deleteValue("memnum"+nr);
-         }
+          }
+        }
       }
     }
 
-//Er wordt vaak een GPS schermpje getoond bij starten of stoppen app. En de batterij gaat snel op.
- 
-function getInitialView() {
-//   Position.enableLocationEvents(Position.LOCATION_DISABLE,null);
-   return [new EmptyView(), new EmptyDelegate()];
+    initer = new init();
+    initer.initall();
+    initmessages();
+  }
+
+  function onStop(state) {
+    stopglucose();
+    Storage.setValue("glunits", glunits);
+    for (var i = 0; i < numset.size(); i++) {
+      var nr = numset[i];
+      if (memnum[nr].size()) {
+        Storage.setValue(
+          "memnum" + nr,
+          StringUtil.charArrayToString(memnum[nr])
+        );
+      } else {
+        Storage.deleteValue("memnum" + nr);
+      }
     }
+  }
 
-
-
-   
-
-
-
+  // A GPS screen is often shown when starting or stopping the app. And the battery drains quickly.
+  function getInitialView() {
+    return [new EmptyView(), new EmptyDelegate()];
+  }
 }
