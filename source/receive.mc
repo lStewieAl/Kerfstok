@@ -30,7 +30,7 @@ function setglucose(gegs) {
     var nooff = alarm & 0x07;
     if ((alarm & 0x08) != 0x0) {
       if ((alarm & 0x10) != 0x0) {
-        startalarm();
+        StartAlarm();
       } else {
         clearbeep();
         clearbeep();
@@ -89,9 +89,9 @@ function setendhere(base, num) {
   Communications.transmit([DIDSETENDNUM], null, new CommListener());
 }
 
-function oninput(data) {
+function processIncomingMessage(data) {
   if (data instanceof Toybox.Lang.Array && data.size() > 0) {
-    var key = data[0];
+    var key = data[0] as Lang.Number;
     switch (data.size()) {
       case 1:
         switch (key) {
@@ -106,7 +106,6 @@ function oninput(data) {
             System.println("Key " + key);
             return;
         }
-        break;
       case 2:
         {
           var num = data[1];

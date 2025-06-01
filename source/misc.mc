@@ -104,7 +104,7 @@ function generatealarm() {
   }
 }
 
-function startalarm() {
+function StartAlarm() as Void {
   alarmactive = true;
   generatealarm();
 }

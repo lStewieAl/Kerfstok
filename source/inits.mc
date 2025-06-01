@@ -139,7 +139,7 @@ class init {
     for (var i = 0; i < 2; i++) {
       lowestchange[i] = getStoragelowestchange(i);
     }
-    setcolor(Storage.getValue("reversecolor"));
+    updateThemeColors(Storage.getValue("reversecolor"));
     initdisplay();
     readsports();
     setglunit(Storage.getValue("glunits"));

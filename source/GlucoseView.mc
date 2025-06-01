@@ -10,7 +10,6 @@ using Toybox.ActivityMonitor;
 using Toybox.Math;
 
 var foreground = Gfx.COLOR_WHITE;
-
 var background = Gfx.COLOR_BLACK;
 
 const maxver = 30 * 11;
@@ -19,7 +18,8 @@ var glucosetime = 0;
 var sensorversion = "";
 var theight;
 var density = 1.0;
-function setcolor(num) {
+
+function updateThemeColors(num) {
   if (num == 1) {
     foreground = Gfx.COLOR_WHITE;
     background = Gfx.COLOR_BLACK;
