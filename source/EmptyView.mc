@@ -38,7 +38,6 @@ class EmptyView extends WatchUi.View {
       dc.getFontHeight(clockfont) /
       (edge1040 || edge840 ? 1.8 : edge830 ? 2.1 : 2.7);
     theight = dc.getFontHeight(Gfx.FONT_NUMBER_HOT);
-    return true;
   }
 
   function onUpdate(dc) {

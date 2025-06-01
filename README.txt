@@ -19,9 +19,9 @@ For information about how to build a Garmin watch app, see:
 https://developer.garmin.com/connect-iq/connect-iq-basics/getting-started/#gettingstarted
 
 To build the app you need to turn off type checkings: 
-- When using Eclipse, you have to put  -l 0
+- When using Eclipse, you have to put  -l 2
 in Windows->Preferences->ConnectIQ->Compiler->"Compiler time options". See: 
 https://forums.garmin.com/developer/connect-iq/f/discussion/314861/sdk-4-1-6-generating-new-errors-and-warnings
-- In Visual Studio Code, you have to go to the Extensions (View->Extensions), Press on the cog symbol beside Monkey, select "Extension settings" and set "Type Check Level" to off. 
+- In Visual Studio Code, you have to go to the Extensions (View->Extensions), Press on the cog symbol beside Monkey, select "Extension settings" and set "Type Check Level" to "Informative". 
 
 Jaap Korthals Altes

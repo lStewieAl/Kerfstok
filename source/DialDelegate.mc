@@ -20,7 +20,7 @@ class numStore {
     return "";
   }
 
-  function toshoweffect() {
+  function toshoweffect() as Void {
     var tim = Time.now();
     var prec = precvars[varid];
     var rounded = round(floval, prec);

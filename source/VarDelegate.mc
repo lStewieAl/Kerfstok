@@ -1,3 +1,4 @@
+using Toybox.Lang;
 using Toybox.WatchUi;
 using Toybox.Graphics as Gfx;
 using Toybox.System;
@@ -71,12 +72,12 @@ class VarDelegate extends WatchUi.BehaviorDelegate {
   (:debug)
   function onMenu() {
     var menu = new WatchUi.Menu();
-    menu.addItem("Send Labels", 0);
-    menu.addItem("Send Nums", 1);
-    menu.addItem("Set lastnum", 2);
-    menu.addItem("Make data", 3);
-    menu.addItem("Test Labels", 4);
-    menu.addItem("Test Show", 5);
+    menu.addItem("Send Labels", 0 as Lang.Symbol);
+    menu.addItem("Send Nums", 1 as Lang.Symbol);
+    menu.addItem("Set lastnum", 2 as Lang.Symbol);
+    menu.addItem("Make data", 3 as Lang.Symbol);
+    menu.addItem("Test Labels", 4 as Lang.Symbol);
+    menu.addItem("Test Show", 5 as Lang.Symbol);
     WatchUi.pushView(menu, new sendMenuDelegate(), WatchUi.SLIDE_IMMEDIATE);
     return true;
   }

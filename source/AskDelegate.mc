@@ -9,7 +9,6 @@ class AskDelegate extends WatchUi.BehaviorDelegate {
   }
 
   function onBack() {
-    onResponse(false);
     WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
     return true;
   }
@@ -18,9 +17,7 @@ class AskDelegate extends WatchUi.BehaviorDelegate {
     if (clickEvent.getType() == CLICK_TYPE_TAP) {
       var co = clickEvent.getCoordinates();
       var y = co[1];
-      var x = co[0];
       if (y * 2 > height) {
-        onResponse(x * 2 > width);
         WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
       }
     }

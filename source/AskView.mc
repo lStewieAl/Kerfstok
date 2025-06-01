@@ -7,10 +7,11 @@ using Toybox.Time.Gregorian;
 class AskView extends WatchUi.View {
   var comments;
   var question;
-  function initialize(c, q) {
+  
+  function initialize(comments, questions) {
     View.initialize();
-    comments = c;
-    question = q;
+    self.comments = comments;
+    self.question = questions;
   }
 
   function onLayout(dc) {}
@@ -45,14 +46,14 @@ class AskView extends WatchUi.View {
       wmid,
       height * 0.2,
       Gfx.FONT_LARGE,
-      comments,
+      self.comments,
       Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER
     );
     dc.drawText(
       wmid,
       height * 0.5,
       Gfx.FONT_LARGE,
-      question,
+      self.question,
       Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER
     );
     dc.drawText(

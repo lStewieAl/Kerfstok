@@ -12,6 +12,8 @@ class DeleteConfirmationDelegate extends WatchUi.ConfirmationDelegate {
   function onResponse(response) {
     if (response == WatchUi.CONFIRM_YES) {
       delete(base, datanum);
+      return true;
     }
+    return false;
   }
 }

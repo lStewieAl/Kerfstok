@@ -37,16 +37,17 @@ var showdistanceunit = false;
 
 var alarmactive = false;
 
-function timerCallback() {
-  toshow = 1;
-  WatchUi.requestUpdate();
-  if (alarmactive) {
-    generatealarm();
-  }
-}
-
 class init {
   const mile = 1609.34;
+
+  function timerCallback() as Void {
+    toshow = 1;
+    WatchUi.requestUpdate();
+    if (alarmactive) {
+      generatealarm();
+    }
+  }
+
   var inttimer = null,
     timerstarter = null;
   const secint = 10;
@@ -59,7 +60,7 @@ class init {
     );
   }
 
-  function timesetter() {
+  function timesetter() as Void {
     inttimer = new Timer.Timer();
     inttimer.start(method(:timerCallback), secint * 1000, true);
     WatchUi.requestUpdate();
@@ -102,7 +103,7 @@ class init {
     numset = [];
     for (var labnr = 0; labnr < memlab.size(); labnr++) {
       var num = Storage.getValue("memnum" + labnr);
-      if (num != null && num has :length && num.length()) {
+      if (num != null && num has :length && num.length() != 0) {
         numset.add(labnr);
         memnum.add(num.toCharArray());
       } else {
@@ -113,18 +114,18 @@ class init {
   }
 
   function initdisplay() {
-    var sets = System.getDeviceSettings();
-    screenShape = sets.screenShape;
-    if (sets.paceUnits == System.UNIT_STATUTE) {
+    var settings = System.getDeviceSettings();
+    screenShape = settings.screenShape;
+    if (settings.paceUnits == System.UNIT_STATUTE) {
       toshowspeed = 60.0 * 60.0 * toshowdistance;
       speedunits = "mph";
     }
-    if (sets.distanceUnits == System.UNIT_STATUTE) {
+    if (settings.distanceUnits == System.UNIT_STATUTE) {
       toshowdistance = 1.0 / mile;
       lapsize = 5.0 * mile;
       distanceunits = "mi";
     }
-    if ((sets.distanceUnits != sets.paceUnits) != System.UNIT_STATUTE) {
+    if (settings.distanceUnits == settings.paceUnits) {
       showdistanceunit = true;
     }
 

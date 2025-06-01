@@ -156,11 +156,11 @@ function tokenize(chars, len) {
   var oper = 1;
   var neg = 1;
   for (var i = 0; i < len; i++) {
-    var el;
+    var el = chars[0];
     for (; i < len; i++) {
       el = chars[i];
       if (el >= '0' && el <= '9') {
-        get = get * 10 + (el.toNumber() - 48);
+        get = get * 10 + (el.toNumber() - '0');
       } else {
         if (el == '.') {
           if (point != nopoint) {

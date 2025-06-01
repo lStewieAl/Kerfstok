@@ -1,3 +1,4 @@
+using Toybox.Lang;
 using Toybox.WatchUi;
 using Toybox.Graphics as Gfx;
 using Toybox.System;
@@ -96,7 +97,7 @@ class SportStartDelegate extends WatchUi.BehaviorDelegate {
   }
 
   var prevautolap = 0;
-  function onPosition(info) {
+  function onPosition(info as Position.Info) as Void {
     locinfo = info;
     actinfo = Activity.getActivityInfo();
     if (actinfo != null) {

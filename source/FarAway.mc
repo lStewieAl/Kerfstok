@@ -16,6 +16,8 @@ class FarWayConfirmationDelegate extends WatchUi.ConfirmationDelegate {
 
       havenums(base);
       WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+      return true;
     }
+    return false;
   }
 }

@@ -88,7 +88,7 @@ class HistView extends WatchUi.View {
       Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER
     );
 
-    var olddag = null;
+    var olddag = null as Gregorian.Info;
 
     item0 = showiter0;
     item1 = showiter1;

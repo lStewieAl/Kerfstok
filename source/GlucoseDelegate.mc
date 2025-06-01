@@ -8,7 +8,6 @@ using Toybox.ActivityRecording;
 class StopSportConfirmationDelegate extends AskDelegate {
   function initialize() {
     AskDelegate.initialize();
-    ConfirmationDelegate.initialize();
   }
 
   function onResponse(response) {

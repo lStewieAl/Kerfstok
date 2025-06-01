@@ -33,8 +33,6 @@ var fr965 = false;
 var fr165 = false;
 var mk3 = false;
 class TakeNumApp extends Application.AppBase {
-  private var methodmail as (Method(mailIter as MailboxIterator) as Void);
-  private var methodphone as (Method(msg as PhoneAppMessage) as Void);
   public function onMail(mailIter as MailboxIterator) as Void {
     var mail = mailIter.next();
 
@@ -56,13 +54,11 @@ class TakeNumApp extends Application.AppBase {
   function initmessages() {
     if (Communications has :registerForPhoneAppMessages) {
       System.println("registerForPhoneAppMessages");
-      methodphone = method(:onPhone);
-      Communications.registerForPhoneAppMessages(methodphone);
+      Communications.registerForPhoneAppMessages(method(:onPhone));
     } else {
       if (Communications has :setMailboxListener) {
         System.println("setMailboxListener");
-        methodmail = method(:onMail);
-        Communications.setMailboxListener(methodmail);
+        Communications.setMailboxListener(method(:onMail));
       }
     }
     System.println("end initmessages");
@@ -156,7 +152,7 @@ class TakeNumApp extends Application.AppBase {
   function onStop(state) {
     stopglucose();
     Storage.setValue("glunits", glunits);
-    for (var i = 0; i < numset.size(); i++) {
+    for (var i = 0, n = numset.size(); i < n; i++) {
       var nr = numset[i];
       if (memnum[nr].size()) {
         Storage.setValue(
