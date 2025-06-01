@@ -2,8 +2,8 @@ using Toybox.WatchUi;
 using Toybox.Graphics as Gfx;
 using Toybox.System;
 using Toybox.Application.Storage;
-var clockhight;
-var clockfont;
+var clockHeight;
+var clockFont;
 class VarView extends WatchUi.View {
   var hmid;
   function initialize() {
@@ -24,8 +24,8 @@ class VarView extends WatchUi.View {
     var myTime = System.getClockTime();
     dc.drawText(
       wmid,
-      clockhight,
-      clockfont,
+      clockHeight,
+      clockFont,
       myTime.hour.format("%02d") + ":" + myTime.min.format("%02d"),
       Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER
     );

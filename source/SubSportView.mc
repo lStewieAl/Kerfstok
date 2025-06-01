@@ -15,8 +15,8 @@ class SubSportView extends WatchUi.View {
 
   function onShow() {}
   function onLayout(dc) {
-    clockhight =
-      dc.getFontHeight(clockfont) /
+    clockHeight =
+      dc.getFontHeight(clockFont) /
       (edge1040 || edge840 ? 1.8 : edge830 ? 2.1 : 2.7);
   }
 
@@ -28,8 +28,8 @@ class SubSportView extends WatchUi.View {
     var myTime = System.getClockTime();
     dc.drawText(
       wmid,
-      clockhight,
-      clockfont,
+      clockHeight,
+      clockFont,
       myTime.hour.format("%02d") + ":" + myTime.min.format("%02d"),
       Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER
     );

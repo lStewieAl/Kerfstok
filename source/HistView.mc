@@ -33,12 +33,12 @@ class HistView extends WatchUi.View {
       : Gfx.FONT_XTINY;
   const valueheight =
     edgeexplore2 || edge840 || fr165
-      ? clockhight * 0.9
+      ? clockHeight * 0.9
       : edge1040 || venusq || venusq2
-      ? clockhight * 0.8
+      ? clockHeight * 0.8
       : edge830
-      ? clockhight * 0.7
-      : clockhight * 0.85;
+      ? clockHeight * 0.7
+      : clockHeight * 0.85;
 
   function initialize() {
     View.initialize();
@@ -56,7 +56,7 @@ class HistView extends WatchUi.View {
       ? height * 0.03
       : 0.0;
     hmid =
-      (height - clockhight) *
+      (height - clockHeight) *
       ((venusq || venusq2
         ? 0.03
         : edgeexplore2 || edge1040
@@ -82,8 +82,8 @@ class HistView extends WatchUi.View {
     var myTime = System.getClockTime();
     dc.drawText(
       wmid,
-      clockhight,
-      clockfont,
+      clockHeight,
+      clockFont,
       myTime.hour.format("%02d") + ":" + myTime.min.format("%02d"),
       Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER
     );

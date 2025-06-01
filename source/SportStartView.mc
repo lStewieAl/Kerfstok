@@ -27,8 +27,8 @@ class SportStartView extends WatchUi.View {
     var myTime = System.getClockTime();
     dc.drawText(
       wmid,
-      clockhight,
-      clockfont,
+      clockHeight,
+      clockFont,
       myTime.hour.format("%02d") + ":" + myTime.min.format("%02d"),
       Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER
     );
@@ -85,7 +85,7 @@ class SportStartView extends WatchUi.View {
       dc.drawText(
         width * 0.3,
         4 * hmid + 10,
-        clockfont,
+        clockFont,
         "GPS",
         Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_RIGHT
       );

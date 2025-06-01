@@ -25,8 +25,8 @@ class AskView extends WatchUi.View {
     var myTime = Gregorian.info(new Time.Moment(unixnu), Time.FORMAT_MEDIUM);
     dc.drawText(
       wmid,
-      clockhight,
-      clockfont,
+      clockHeight,
+      clockFont,
       myTime.hour.format("%02d") + ":" + myTime.min.format("%02d"),
       Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER
     );

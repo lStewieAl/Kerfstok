@@ -101,6 +101,6 @@ class AppMain extends Application.AppBase {
 
   // A GPS screen is often shown when starting or stopping the app. And the battery drains quickly.
   function getInitialView() {
-    return [new EmptyView(), new EmptyDelegate()];
+    return [new MainMenuView(), new MainMenuDelegate()];
   }
 }
