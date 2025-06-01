@@ -12,7 +12,7 @@ class MainMenuDelegate extends WatchUi.BehaviorDelegate {
   function onBack() as Lang.Boolean {
     WatchUi.pushView(
       new AskView("", "Quit?"),
-      new ExitDelegate(),
+      new ExitConfirmationDelegateMainMenu(),
       WatchUi.SLIDE_IMMEDIATE
     );
     return true;

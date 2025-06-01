@@ -41,7 +41,7 @@ function makedata(num) {
 }
 
 (:debug)
-class sendMenuDelegate extends WatchUi.MenuInputDelegate {
+class SendMenuDelegate extends WatchUi.MenuInputDelegate {
   function initialize() {
     MenuInputDelegate.initialize();
   }

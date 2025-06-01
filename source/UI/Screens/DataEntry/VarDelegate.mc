@@ -78,7 +78,7 @@ class VarDelegate extends WatchUi.BehaviorDelegate {
     menu.addItem("Make data", 3 as Lang.Symbol);
     menu.addItem("Test Labels", 4 as Lang.Symbol);
     menu.addItem("Test Show", 5 as Lang.Symbol);
-    WatchUi.pushView(menu, new sendMenuDelegate(), WatchUi.SLIDE_IMMEDIATE);
+    WatchUi.pushView(menu, new SendMenuDelegate(), WatchUi.SLIDE_IMMEDIATE);
     return true;
   }
 }

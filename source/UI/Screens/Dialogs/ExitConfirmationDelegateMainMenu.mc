@@ -3,7 +3,7 @@ using Toybox.Graphics as Gfx;
 using Toybox.System;
 using Toybox.Lang;
 
-class ExitDelegate extends AskDelegate {
+class ExitConfirmationDelegateMainMenu extends AskDelegate {
   function initialize() {
     AskDelegate.initialize();
   }
