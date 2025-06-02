@@ -7,6 +7,7 @@ using Toybox.Timer;
 using Toybox.Time;
 using Toybox.System;
 using Toybox.Communications;
+
 var height, width, wmid;
 var wnumfont, hnumfont, xnumbers, hmidnum;
 var screenShape;
@@ -35,15 +36,13 @@ var toshowspeed = (60.0 * 60.0) / 1000.0;
 var toshowdistance = 1.0 / 1000.0;
 var showdistanceunit = false;
 
-var isAlarmActive = false;
-
 class init {
   const mile = 1609.34;
 
   function timerCallback() as Void {
     toshow = 1;
     WatchUi.requestUpdate();
-    if (isAlarmActive) {
+    if (AppSettings.isAlarmActive) {
       generatealarm();
     }
   }
@@ -139,11 +138,11 @@ class init {
     for (var i = 0; i < 2; i++) {
       lowestchange[i] = getStoragelowestchange(i);
     }
-    updateThemeColors(Storage.getValue("reversecolor"));
+    AppSettings.updateThemeColors(Storage.getValue("reversecolor"));
     initdisplay();
     readsports();
     setglunit(Storage.getValue("glunits"));
-    if (!glucoactive || lowestchange[0] == null) {
+    if (!AppSettings.isGlucoCommsActive || lowestchange[0] == null) {
       startglucose();
     }
   }

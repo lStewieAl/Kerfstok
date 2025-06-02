@@ -13,7 +13,7 @@ class CutView extends WatchUi.View {
 
   function onUpdate(dc) {
     dc.clearClip();
-    dc.setColor(foreground, background);
+    dc.setColor(AppSettings.foregroundColor, AppSettings.backgroundColor);
     dc.clear();
 	
     var wmid = width / 2;

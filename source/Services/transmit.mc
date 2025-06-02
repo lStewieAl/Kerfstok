@@ -46,10 +46,9 @@ function numdataone(base, num) {
 function havenums(base) {
   sendnums(HAVENUMS, base, lowestchange[base]);
 }
-var glucoactive = false;
 
 function asklowest() {
-  if (!glucoactive) {
+  if (!AppSettings.isGlucoCommsActive) {
     startglucose();
   }
 }
@@ -60,11 +59,11 @@ function startglucose() {
     null,
     new CommListener()
   );
-  glucoactive = true;
+  AppSettings.isGlucoCommsActive = true;
 }
 
 function gotglucose() {
-  if (!glucoactive) {
+  if (!AppSettings.isGlucoCommsActive) {
     startglucose();
   } else {
     Communications.transmit([GOTGLUCOSE], null, new CommListener());
@@ -72,9 +71,9 @@ function gotglucose() {
 }
 
 function stopglucose() {
-  if (glucoactive) {
+  if (AppSettings.isGlucoCommsActive) {
     Communications.transmit([STOP], null, new CommListener());
-    glucoactive = false;
+    AppSettings.isGlucoCommsActive = false;
   }
 }
 

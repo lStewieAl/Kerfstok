@@ -234,7 +234,7 @@ class SportStartDelegate extends WatchUi.BehaviorDelegate {
   }
 
   function onKey(keyEvent) {
-    if (isAlarmActive) {
+    if (AppSettings.isAlarmActive) {
       stopalarm();
     } else {
       startsport();

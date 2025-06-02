@@ -15,7 +15,7 @@ class RetrieveView extends WatchUi.View {
     dc.clearClip();
     var wmid = width / 2;
     var hmid = height / (geg.onscr + 1);
-    dc.setColor(foreground, background);
+    dc.setColor(AppSettings.foregroundColor, AppSettings.backgroundColor);
     dc.clear();
 
     var myTime = System.getClockTime();

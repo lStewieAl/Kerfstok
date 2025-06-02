@@ -133,7 +133,7 @@ class SportView extends WatchUi.View {
 
   function onUpdate(dc) {
     dc.clearClip();
-    dc.setColor(foreground, background);
+    dc.setColor(AppSettings.foregroundColor, AppSettings.backgroundColor);
     dc.clear();
     var unixnu = Time.now().value();
 
@@ -152,7 +152,7 @@ class SportView extends WatchUi.View {
       dc.setColor(Gfx.COLOR_PURPLE, Gfx.COLOR_TRANSPARENT);
       var xid = x - dims[0] / 2;
       dc.fillRectangle(xid, verh + 1, (dims[0] * vers) / maxver, dims[1]);
-      dc.setColor(foreground, Gfx.COLOR_TRANSPARENT);
+      dc.setColor(AppSettings.foregroundColor, Gfx.COLOR_TRANSPARENT);
       dc.drawText(
         x,
         verh,
@@ -187,7 +187,7 @@ class SportView extends WatchUi.View {
         }
       }
 
-      dc.setColor(foreground, Gfx.COLOR_TRANSPARENT);
+      dc.setColor(AppSettings.foregroundColor, Gfx.COLOR_TRANSPARENT);
       if (dc has :setAntiAlias) {
         dc.setAntiAlias(true);
       }
@@ -195,9 +195,9 @@ class SportView extends WatchUi.View {
         var yp = starty + gluheight * 0.54;
         drawarrow(dc, width, height, width * 0.3, yp, density * 0.7);
       }
-      dc.setColor(foreground, Gfx.COLOR_TRANSPARENT);
+      dc.setColor(AppSettings.foregroundColor, Gfx.COLOR_TRANSPARENT);
     } else {
-      dc.setColor(foreground, Gfx.COLOR_TRANSPARENT);
+      dc.setColor(AppSettings.foregroundColor, Gfx.COLOR_TRANSPARENT);
     }
     if (positionInfo != null) {
       var showspeed = positionInfo.speed * toshowspeed;

@@ -9,7 +9,7 @@ using Toybox.Position;
 
 function receivecolor(num) as Void {
   Storage.setValue("reversecolor", num);
-  updateThemeColors(num);
+  AppSettings.updateThemeColors(num);
   Communications.transmit([COLORBLACK], null, new CommListener());
 }
 

@@ -20,9 +20,9 @@ class SportStartView extends WatchUi.View {
 
   function onUpdate(dc) {
     dc.clearClip();
-    dc.setColor(foreground, background);
+    dc.setColor(AppSettings.foregroundColor, AppSettings.backgroundColor);
     dc.clear();
-    dc.setColor(foreground, Gfx.COLOR_TRANSPARENT);
+    dc.setColor(AppSettings.foregroundColor, Gfx.COLOR_TRANSPARENT);
 
     var myTime = System.getClockTime();
     dc.drawText(

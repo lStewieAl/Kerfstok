@@ -27,7 +27,7 @@ class MainMenuView extends WatchUi.View {
   function onUpdate(dc) {
     if (clockHeight != null) {
       dc.clearClip();
-      dc.setColor(foreground, background);
+      dc.setColor(AppSettings.foregroundColor, AppSettings.backgroundColor);
       dc.clear();
       var myTime = System.getClockTime();
       dc.drawText(

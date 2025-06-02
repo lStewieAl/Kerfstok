@@ -9,9 +9,6 @@ using Toybox.Activity;
 using Toybox.ActivityMonitor;
 using Toybox.Math;
 
-var foreground = Gfx.COLOR_WHITE;
-var background = Gfx.COLOR_BLACK;
-
 const maxver = 30 * 11;
 var glucoserate = 0.0;
 var glucosetime = 0;
@@ -19,16 +16,6 @@ var sensorversion = "";
 var theight;
 var density = 1.0;
 
-function updateThemeColors(num) {
-  if (num == 1) {
-    foreground = Gfx.COLOR_WHITE;
-    background = Gfx.COLOR_BLACK;
-  } else {
-    foreground = Gfx.COLOR_BLACK;
-    background = Gfx.COLOR_WHITE;
-  }
-  WatchUi.requestUpdate();
-}
 
 function drawarrow(dc, width, height, xorg, yorg, density) {
   dc.setPenWidth(density * 5.0);
@@ -106,14 +93,14 @@ class GlucoseView extends WatchUi.View {
 
   function onUpdate(dc) {
     dc.clearClip();
-    dc.setColor(foreground, background);
+    dc.setColor(AppSettings.foregroundColor, AppSettings.backgroundColor);
     dc.clear();
     var unixnu = Time.now().value();
     var myTime = Gregorian.info(new Time.Moment(unixnu), Time.FORMAT_MEDIUM);
 
     var vers = unixnu - glucosetime;
 
-    dc.setColor(foreground, Gfx.COLOR_TRANSPARENT);
+    dc.setColor(AppSettings.foregroundColor, Gfx.COLOR_TRANSPARENT);
     if (vers < maxver) {
       var yorg = height * 0.58;
       var y = yorg;
@@ -151,10 +138,10 @@ class GlucoseView extends WatchUi.View {
       y += height * 0.12;
 
       var dims = dc.getTextDimensions(sensorversion, Gfx.FONT_XTINY);
-      dc.setColor(Gfx.COLOR_PURPLE, background);
+      dc.setColor(Gfx.COLOR_PURPLE, AppSettings.backgroundColor);
       var xid = x - dims[0] / 2;
       dc.fillRectangle(xid, y, (dims[0] * vers) / maxver, dims[1]);
-      dc.setColor(foreground, Gfx.COLOR_TRANSPARENT);
+      dc.setColor(AppSettings.foregroundColor, Gfx.COLOR_TRANSPARENT);
       dc.drawText(x, y, Gfx.FONT_XTINY, sensorversion, Gfx.TEXT_JUSTIFY_CENTER);
 
       if (dc has :setAntiAlias) {
@@ -163,7 +150,7 @@ class GlucoseView extends WatchUi.View {
       if (glucoserate != -20.0 && glucoserate != 20.0) {
         drawarrow(dc, width, height, linexpos, yorg, density * 0.95);
       }
-      dc.setColor(foreground, Gfx.COLOR_TRANSPARENT);
+      dc.setColor(AppSettings.foregroundColor, Gfx.COLOR_TRANSPARENT);
     }
     dc.drawText(
       wmid * 0.99,

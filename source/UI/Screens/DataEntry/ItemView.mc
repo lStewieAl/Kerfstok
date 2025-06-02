@@ -15,7 +15,7 @@ class ItemView extends WatchUi.View {
 
   function onUpdate(dc) {
     dc.clearClip();
-    dc.setColor(foreground, background);
+    dc.setColor(AppSettings.foregroundColor, AppSettings.backgroundColor);
     dc.clear();
 	
     var myTime = System.getClockTime();
@@ -87,7 +87,7 @@ class ItemView extends WatchUi.View {
       Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_RIGHT
     );
 
-    dc.setColor(background, foreground);
+    dc.setColor(AppSettings.backgroundColor, AppSettings.foregroundColor);
     dc.drawText(
       (wmid * 2) / 3,
       4 * hmid + 10,

@@ -47,20 +47,20 @@ public function clearBeepPattern() as Void { vibrate(CLEAR_VIBRATION); }
 function generatealarm() as Void {
   for (var i = 0; i < 6; ++i) {
     clearBeepPattern();
-    if (!isAlarmActive) {
+    if (!AppSettings.isAlarmActive) {
       return;
     }
   }
 }
 
 function startGeneratedAlarm() as Void {
-  isAlarmActive = true;
+  AppSettings.isAlarmActive = true;
   generatealarm();
 }
 
 function stopGeneratedAlarm() as Void {
-  if (isAlarmActive) {
-    isAlarmActive = false;
+  if (AppSettings.isAlarmActive) {
+    AppSettings.isAlarmActive = false;
     if (Attention has :vibrate) {
       Attention.vibrate([new Attention.VibeProfile(0, 1)]); // 0 power for 1ms to clear vibration
     }

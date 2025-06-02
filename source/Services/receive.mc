@@ -24,7 +24,7 @@ function setglucose(gegs) {
   }
   var alarm = gegs[4];
   if (alarm == 0) {
-    isAlarmActive = false;
+    AppSettings.isAlarmActive = false;
     glucoserate = gegs[3];
   } else {
     var nooff = alarm & 0x07;
@@ -99,7 +99,7 @@ function processIncomingMessage(data) {
             startglucose();
             return;
           case STOPALARM:
-            isAlarmActive = false;
+            AppSettings.isAlarmActive = false;
             Communications.transmit([GOTSTOPALARM], null, new CommListener());
             return;
           default:

@@ -15,9 +15,9 @@ class MonthView extends WatchUi.View {
 
   function onUpdate(dc) {
     dc.clearClip();
-    dc.setColor(foreground, background);
+    dc.setColor(AppSettings.foregroundColor, AppSettings.backgroundColor);
     dc.clear();
-    dc.setColor(foreground, Graphics.COLOR_TRANSPARENT);
+    dc.setColor(AppSettings.foregroundColor, Graphics.COLOR_TRANSPARENT);
 	
     var myTime = System.getClockTime();
     dc.drawText(

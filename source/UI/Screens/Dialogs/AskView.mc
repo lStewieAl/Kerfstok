@@ -18,7 +18,7 @@ class AskView extends WatchUi.View {
 
   function onUpdate(dc) {
     dc.clearClip();
-    dc.setColor(foreground, background);
+    dc.setColor(AppSettings.foregroundColor, AppSettings.backgroundColor);
     dc.clear();
 
     var unixnu = Time.now().value();
@@ -31,7 +31,7 @@ class AskView extends WatchUi.View {
       Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER
     );
 
-    dc.setColor(foreground, Gfx.COLOR_TRANSPARENT);
+    dc.setColor(AppSettings.foregroundColor, Gfx.COLOR_TRANSPARENT);
     var vers = unixnu - glucosetime;
     if (vers < maxver) {
       dc.drawText(

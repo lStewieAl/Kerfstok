@@ -22,7 +22,7 @@ class SubSportView extends WatchUi.View {
 
   function onUpdate(dc) {
     dc.clearClip();
-    dc.setColor(foreground, background);
+    dc.setColor(AppSettings.foregroundColor, AppSettings.backgroundColor);
     dc.clear();
 
     var myTime = System.getClockTime();
@@ -73,7 +73,7 @@ class SubSportDelegate extends WatchUi.BehaviorDelegate {
   }
 
   function onKey(keyEvent) {
-    if (isAlarmActive) {
+    if (AppSettings.isAlarmActive) {
       stopalarm();
     }
     return true;
