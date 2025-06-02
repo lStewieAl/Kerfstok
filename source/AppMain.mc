@@ -7,16 +7,6 @@ using Toybox.StringUtil;
 using Toybox.Application.Storage;
 using Toybox.Position;
 
-function receivecolor(num) as Void {
-  Storage.setValue("reversecolor", num);
-  AppSettings.updateThemeColors(num);
-  Communications.transmit([COLORBLACK], null, new CommListener());
-}
-
-function ackReceived() as Void {
-  Communications.transmit([COLORBLACK], null, new CommListener());
-}
-
 var initer = null;
 var venusq = false;
 var venu = false;

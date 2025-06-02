@@ -2,6 +2,8 @@ using Toybox.System;
 using Toybox.Communications;
 using Toybox.Time;
 using Toybox.SensorHistory;
+using Toybox.Application.Storage;
+
 class CommListener extends Communications.ConnectionListener {
   function initialize() {
     Communications.ConnectionListener.initialize();
@@ -58,4 +60,14 @@ function heartrate(starttime) {
     }
     trans(HEART, sensorIter.getNewestSampleTime().value(), uit);
   }
+}
+
+function receivecolor(num) as Void {
+  Storage.setValue("reversecolor", num);
+  AppSettings.updateThemeColors(num);
+  Communications.transmit([COLORBLACK], null, new CommListener());
+}
+
+function ackReceived() as Void {
+  Communications.transmit([COLORBLACK], null, new CommListener());
 }
