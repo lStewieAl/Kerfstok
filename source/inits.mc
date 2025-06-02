@@ -130,10 +130,10 @@ class init {
     }
 
     settimer();
-    getmonths();
   }
 
   function initall() {
+    DateTimeUtil.init();
     storageinit();
     getsettings();
     for (var i = 0; i < 2; i++) {

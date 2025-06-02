@@ -187,7 +187,7 @@ class ItemDelegate extends WatchUi.BehaviorDelegate {
                     "Move to " +
                       daginf.day +
                       "-" +
-                      months[daginf.month - 1] +
+                      DateTimeUtil.monthNames[daginf.month - 1] +
                       "-" +
                       daginf.year +
                       "?"

@@ -81,7 +81,7 @@ class SportStartView extends WatchUi.View {
       Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER
     );
 
-    if (locinfo != null) {
+    if (positionInfo != null) {
       dc.drawText(
         width * 0.3,
         4 * hmid + 10,

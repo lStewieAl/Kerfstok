@@ -27,28 +27,22 @@ const VIBE_PROFILE_BEEP4 = [
   new Attention.VibeProfile(25, 66),
 ];
 
-var _clearVibeData as Lang.Array<Attention.VibeProfile>? = null; // Initialized on first use
-function getClearVibeData() as Lang.Array<Attention.VibeProfile> {
-  if (_clearVibeData == null) {
-    _clearVibeData = [
-      new Attention.VibeProfile(50, 100),
-      new Attention.VibeProfile(100, 500),
-      new Attention.VibeProfile(50, 50),
-      new Attention.VibeProfile(100, 1000),
-      new Attention.VibeProfile(50, 100),
-      new Attention.VibeProfile(100, 500),
-      new Attention.VibeProfile(50, 50),
-      new Attention.VibeProfile(100, 500),
-    ];
-  }
-  return _clearVibeData;
-}
+var CLEAR_VIBRATION as Lang.Array<Attention.VibeProfile> = [
+  new Attention.VibeProfile(50, 100),
+  new Attention.VibeProfile(100, 500),
+  new Attention.VibeProfile(50, 50),
+  new Attention.VibeProfile(100, 1000),
+  new Attention.VibeProfile(50, 100),
+  new Attention.VibeProfile(100, 500),
+  new Attention.VibeProfile(50, 50),
+  new Attention.VibeProfile(100, 500),
+];
 
 public function beep1() as Void { vibrate(VIBE_PROFILE_200MS_FULL_POWER); }
 public function beep2() as Void { vibrate(VIBE_PROFILE_BEEP2); }
 public function beep3() as Void { vibrate(VIBE_PROFILE_BEEP3); }
 public function beep4() as Void { vibrate(VIBE_PROFILE_BEEP4); }
-public function clearBeepPattern() as Void { vibrate(getClearVibeData()); }
+public function clearBeepPattern() as Void { vibrate(CLEAR_VIBRATION); }
 
 function generatealarm() as Void {
   for (var i = 0; i < 6; ++i) {

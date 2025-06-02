@@ -12,8 +12,8 @@ using Toybox.Application.Storage;
 var glunits = 0;
 var lapstart = 0;
 
-var locinfo = null;
-var actinfo = null;
+var positionInfo = null;
+var activityInfo = null;
 var lapsize = 5000.0;
 var lapstr1 = "";
 var lapstr2 = "";
@@ -31,7 +31,7 @@ function mklapstr(ver) {
 
 class SportStartDelegate extends WatchUi.BehaviorDelegate {
   var nextlap;
-  var energiefield = null;
+  var energyField = null;
   const glunitstr = ["mg/dL", "mmol/L"];
   var lapnr = 0;
   var subsport = -1;
@@ -89,7 +89,7 @@ class SportStartDelegate extends WatchUi.BehaviorDelegate {
         Position.LOCATION_DISABLE,
         method(:onPosition)
       );
-      locinfo = null;
+      positionInfo = null;
     }
     WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
 
@@ -98,11 +98,11 @@ class SportStartDelegate extends WatchUi.BehaviorDelegate {
 
   var prevautolap = 0;
   function onPosition(info as Position.Info) as Void {
-    locinfo = info;
-    actinfo = Activity.getActivityInfo();
-    if (actinfo != null) {
-      if (actinfo.elapsedDistance != null) {
-        var dist = actinfo.elapsedDistance;
+    positionInfo = info;
+    activityInfo = Activity.getActivityInfo();
+    if (activityInfo != null) {
+      if (activityInfo.elapsedDistance != null) {
+        var dist = activityInfo.elapsedDistance;
         if (dist > nextlap && activityrecord.addLap()) {
           clearBeepPattern();
           var nu = Time.now().value();
@@ -114,12 +114,12 @@ class SportStartDelegate extends WatchUi.BehaviorDelegate {
           nextlap += laplen;
         }
       }
-      if (energiefield != null) {
+      if (energyField != null) {
         if (
-          actinfo has :energyExpenditure &&
-          actinfo.energyExpenditure != null
+          activityInfo has :energyExpenditure &&
+          activityInfo.energyExpenditure != null
         ) {
-          energiefield.setData(actinfo.energyExpenditure);
+          energyField.setData(activityInfo.energyExpenditure);
         }
       }
     }
@@ -133,10 +133,10 @@ class SportStartDelegate extends WatchUi.BehaviorDelegate {
         method(:onPosition)
       );
       glufield = null;
-      energiefield = null;
+      energyField = null;
       activityrecord.save();
       activityrecord = null;
-      locinfo = null;
+      positionInfo = null;
       if (initer != null) {
         initer.settimer();
       }
@@ -163,7 +163,7 @@ class SportStartDelegate extends WatchUi.BehaviorDelegate {
         { :mesgType => Fit.MESG_TYPE_RECORD, :units => glunitstr[glunits] }
       );
 
-      energiefield = activityrecord.createField(
+      energyField = activityrecord.createField(
         "Energy",
         2,
         Fit.DATA_TYPE_FLOAT,

@@ -238,7 +238,7 @@ class HistView extends WatchUi.View {
               " " +
               daginf.day +
               "-" +
-              months[daginf.month - 1] +
+              DateTimeUtil.monthNames[daginf.month - 1] +
               "-" +
               daginf.year +
               space,

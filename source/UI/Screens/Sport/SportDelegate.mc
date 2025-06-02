@@ -87,7 +87,7 @@ class SportDelegate extends WatchUi.BehaviorDelegate {
           }
           return true;
         }
-        res = infofunc(actinfo, it);
+        res = infofunc(activityInfo, it);
         it--;
       } while (res == null);
     }

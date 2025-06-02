@@ -37,7 +37,7 @@ class MeasureView extends WatchUi.View {
     iter = start;
     var tot = infostr.size();
     var end = 2 * rows + 1;
-    if (actinfo == null) {
+    if (activityInfo == null) {
       return;
     }
 
@@ -48,7 +48,7 @@ class MeasureView extends WatchUi.View {
         if (iter == tot) {
           return;
         }
-        res = infofunc(actinfo, iter);
+        res = infofunc(activityInfo, iter);
       } while (res == null);
       var lab = infostr[iter];
       dc.drawText(wmid, hmid * i, Gfx.FONT_XTINY, lab, Gfx.TEXT_JUSTIFY_CENTER);

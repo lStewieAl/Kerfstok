@@ -199,8 +199,8 @@ class SportView extends WatchUi.View {
     } else {
       dc.setColor(foreground, Gfx.COLOR_TRANSPARENT);
     }
-    if (locinfo != null) {
-      var showspeed = locinfo.speed * toshowspeed;
+    if (positionInfo != null) {
+      var showspeed = positionInfo.speed * toshowspeed;
       dc.drawText(
         width * 0.99,
         speedunity,
@@ -235,9 +235,9 @@ class SportView extends WatchUi.View {
       }
     }
     var hr = 0;
-    if (actinfo != null) {
-      if (actinfo.elapsedDistance != null) {
-        var dist = actinfo.elapsedDistance * toshowdistance;
+    if (activityInfo != null) {
+      if (activityInfo.elapsedDistance != null) {
+        var dist = activityInfo.elapsedDistance * toshowdistance;
         dc.drawText(
           width * 0.13,
           ydist,
@@ -255,8 +255,8 @@ class SportView extends WatchUi.View {
           );
         }
       }
-      if (actinfo.currentHeartRate != null) {
-        hr = actinfo.currentHeartRate;
+      if (activityInfo.currentHeartRate != null) {
+        hr = activityInfo.currentHeartRate;
       }
     }
     if (unixnu < endlap) {

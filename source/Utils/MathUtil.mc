@@ -213,3 +213,10 @@ function tokenize(chars, len) {
 function calc(ar, len) {
   return haken(tokenize(ar, len));
 }
+
+function round(val, prec) {
+  if (prec < 0.00001) {
+    return val;
+  }
+  return Math.round(val / prec) * prec;
+}
