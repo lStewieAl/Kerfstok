@@ -10,9 +10,9 @@ using Toybox.ActivityMonitor;
 using Toybox.Math;
 
 const maxver = 30 * 11;
-var glucoserate = 0.0;
-var glucosetime = 0;
-var sensorversion = "";
+var rateOfChange = 0.0;
+var glucoseTimestamp = 0;
+var sensorIdentifier = "";
 var theight;
 var density = 1.0;
 
@@ -21,7 +21,7 @@ function drawarrow(dc, width, height, xorg, yorg, density) {
   dc.setPenWidth(density * 5.0);
   var getx = xorg;
   var gety = yorg;
-  var rate = glucoserate;
+  var rate = rateOfChange;
   var x1 = getx - density * 40.0;
   var y1 = gety + rate * density * 30.0;
 
@@ -98,7 +98,7 @@ class GlucoseView extends WatchUi.View {
     var unixnu = Time.now().value();
     var myTime = Gregorian.info(new Time.Moment(unixnu), Time.FORMAT_MEDIUM);
 
-    var vers = unixnu - glucosetime;
+    var vers = unixnu - glucoseTimestamp;
 
     dc.setColor(AppSettings.foregroundColor, Gfx.COLOR_TRANSPARENT);
     if (vers < maxver) {
@@ -113,10 +113,10 @@ class GlucoseView extends WatchUi.View {
           : fenix8
           ? Gfx.FONT_SYSTEM_NUMBER_HOT
           : Gfx.FONT_SYSTEM_NUMBER_THAI_HOT,
-        glucosestr,
+        formattedGlucoseString,
         Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER
       );
-      if (glucoserate == -20) {
+      if (rateOfChange == -20) {
         dc.drawText(
           width * 0.9,
           y,
@@ -125,7 +125,7 @@ class GlucoseView extends WatchUi.View {
           Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_RIGHT
         );
       } else {
-        if (glucoserate == 20) {
+        if (rateOfChange == 20) {
           dc.drawText(
             width * 0.9,
             y,
@@ -137,17 +137,17 @@ class GlucoseView extends WatchUi.View {
       }
       y += height * 0.12;
 
-      var dims = dc.getTextDimensions(sensorversion, Gfx.FONT_XTINY);
+      var dims = dc.getTextDimensions(sensorIdentifier, Gfx.FONT_XTINY);
       dc.setColor(Gfx.COLOR_PURPLE, AppSettings.backgroundColor);
       var xid = x - dims[0] / 2;
       dc.fillRectangle(xid, y, (dims[0] * vers) / maxver, dims[1]);
       dc.setColor(AppSettings.foregroundColor, Gfx.COLOR_TRANSPARENT);
-      dc.drawText(x, y, Gfx.FONT_XTINY, sensorversion, Gfx.TEXT_JUSTIFY_CENTER);
+      dc.drawText(x, y, Gfx.FONT_XTINY, sensorIdentifier, Gfx.TEXT_JUSTIFY_CENTER);
 
       if (dc has :setAntiAlias) {
         dc.setAntiAlias(true);
       }
-      if (glucoserate != -20.0 && glucoserate != 20.0) {
+      if (rateOfChange != -20.0 && rateOfChange != 20.0) {
         drawarrow(dc, width, height, linexpos, yorg, density * 0.95);
       }
       dc.setColor(AppSettings.foregroundColor, Gfx.COLOR_TRANSPARENT);

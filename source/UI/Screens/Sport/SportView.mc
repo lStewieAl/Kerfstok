@@ -145,10 +145,10 @@ class SportView extends WatchUi.View {
       myTime.hour.format("%02d") + ":" + myTime.min.format("%02d"),
       Gfx.TEXT_JUSTIFY_CENTER
     );
-    var vers = unixnu - glucosetime;
+    var vers = unixnu - glucoseTimestamp;
 
     if (vers < maxver) {
-      var dims = dc.getTextDimensions(sensorversion, Gfx.FONT_XTINY);
+      var dims = dc.getTextDimensions(sensorIdentifier, Gfx.FONT_XTINY);
       dc.setColor(Gfx.COLOR_PURPLE, Gfx.COLOR_TRANSPARENT);
       var xid = x - dims[0] / 2;
       dc.fillRectangle(xid, verh + 1, (dims[0] * vers) / maxver, dims[1]);
@@ -157,17 +157,17 @@ class SportView extends WatchUi.View {
         x,
         verh,
         Gfx.FONT_XTINY,
-        sensorversion,
+        sensorIdentifier,
         Gfx.TEXT_JUSTIFY_CENTER
       );
       dc.drawText(
         width * 0.6,
         starty,
         glucosefont,
-        glucosestr,
+        formattedGlucoseString,
         Gfx.TEXT_JUSTIFY_CENTER
       );
-      if (glucoserate == -20) {
+      if (rateOfChange == -20) {
         dc.drawText(
           width * 0.9,
           hheight,
@@ -176,7 +176,7 @@ class SportView extends WatchUi.View {
           Gfx.TEXT_JUSTIFY_RIGHT
         );
       } else {
-        if (glucoserate == 20) {
+        if (rateOfChange == 20) {
           dc.drawText(
             width * 0.9,
             hheight,
@@ -191,7 +191,7 @@ class SportView extends WatchUi.View {
       if (dc has :setAntiAlias) {
         dc.setAntiAlias(true);
       }
-      if (glucoserate != 20.0 && glucoserate != -20.0) {
+      if (rateOfChange != 20.0 && rateOfChange != -20.0) {
         var yp = starty + gluheight * 0.54;
         drawarrow(dc, width, height, width * 0.3, yp, density * 0.7);
       }

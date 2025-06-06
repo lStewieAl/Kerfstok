@@ -5,31 +5,48 @@ using Toybox.Application.Properties as Prop;
 using Toybox.WatchUi;
 using Toybox.Time;
 using Toybox.FitContributor as Fit;
-var glucosestr = " ";
+var formattedGlucoseString = " ";
 
-function setglucose(gegs) {
-  if (!(gegs has :size) || gegs.size() < 5) {
+/**
+ * Processes a new glucose reading received from the phone.
+ * It updates the global glucose string, handles alarms, and submits
+ * the value to the FIT contributor data field if available.
+ *
+ * @param glucoseDataArray An array containing glucose information:
+ * [0] sensorIdentifier (String)
+ * [1] timestamp (Number) - Unix timestamp of the reading
+ * [2] glucoseValue (Float)
+ * [3] rateOfChange (Float)
+ * [4] alarmState (Number) - Bitfield for alarm status
+ * [5] glucoseUnit (Number, optional) - 0 for mg/dL, 1 for mmol/L
+ */
+function updateGlucoseData(glucoseDataArray) {
+  if (!(glucoseDataArray has :size) || glucoseDataArray.size() < 5) {
     return;
   }
-  sensorversion = gegs[0];
-  glucosetime = gegs[1];
-  var glucose = gegs[2];
-  if (gegs.size() == 6) {
-    glunits = gegs[5] == 1 ? 1 : 0;
+  sensorIdentifier = glucoseDataArray[0];
+  glucoseTimestamp = glucoseDataArray[1];
+  var glucoseValue = glucoseDataArray[2];
+  rateOfChange = glucoseDataArray[3];
+  var alarmState = glucoseDataArray[4];
+  if (glucoseDataArray.size() == 6) {
+    // Unit is optionally sent with the glucose value
+    glucoseUnit = glucoseDataArray[5] == 1 ? 1 : 0;
   }
-  if (glunits == 1) {
-    glucosestr = glucose.format("%.1f");
-  } else {
-    glucosestr = glucose.format("%.0f");
+  
+  // Format the glucose string based on the current unit
+  if (glucoseUnit == 1) { // mmol/L
+    formattedGlucoseString = glucoseValue.format("%.1f");
+  } else { // mg/dL
+    formattedGlucoseString = glucoseValue.format("%.0f");
   }
-  var alarm = gegs[4];
-  if (alarm == 0) {
+
+  if (alarmState == 0) {
     AppSettings.isAlarmActive = false;
-    glucoserate = gegs[3];
   } else {
-    var nooff = alarm & 0x07;
-    if ((alarm & 0x08) != 0x0) {
-      if ((alarm & 0x10) != 0x0) {
+    var alarmType = alarmState & 0x07;
+    if ((alarmState & 0x08) != 0x0) {
+      if ((alarmState & 0x10) != 0x0) {
         startGeneratedAlarm();
       } else {
         clearBeepPattern();
@@ -38,154 +55,185 @@ function setglucose(gegs) {
         clearBeepPattern();
       }
     }
-    switch (nooff) {
-      case 4:
-        glucoserate = 20.0;
+
+    // Override rate of change for specific alarm types
+    switch (alarmType) {
+      case 4: // High glucose alarm
+        rateOfChange = 20.0;
         break;
-      case 5:
-        glucoserate = -20.0;
+      case 5: // Low glucose alarm
+        rateOfChange = -20.0;
         break;
       default:
-        glucoserate = gegs[3];
         break;
     }
   }
 
   // TODO: don't add when too old
-  if (glufield != null) {
-    var unixnu = Time.now().value();
-    if (unixnu - glucosetime < 30) {
-      glufield.setData(glucose);
+  if (glucoseDataField != null) {
+    var currentTime = Time.now().value();
+    if (currentTime - glucoseTimestamp < 30) {
+      glucoseDataField.setData(glucoseValue);
     }
   }
   WatchUi.requestUpdate();
   return;
 }
 
-function setglunit(num) {
-  if (num == 1) {
-    glunits = 1;
-  } else {
-    glunits = 0;
-  }
+/**
+ * Sets the glucose unit for formatting values.
+ * @param unitValue 0 for mg/dL, 1 for mmol/L.
+ */
+function setGlucoseUnit(unitValue) {
+  glucoseUnit = (unitValue == 1) ? 1 : 0;
 }
 
-function sendendnum(base) {
-  if (base >= 0 && base < 2) {
+
+/**
+ * Sends the last known data index for a specific data source to the phone.
+ * This is used during data synchronization.
+ * @param dataSourceIndex The index of the data source (0 or 1).
+ */
+function sendLastKnownIndexToPhone(dataSourceIndex) {
+  if (dataSourceIndex >= 0 && dataSourceIndex < 2) {
     Communications.transmit(
-      [SETENDNUM, base, storageid[base]],
+      [SETENDNUM, dataSourceIndex, storageid[dataSourceIndex]],
       null,
       new CommListener()
     );
   }
 }
 
-function setendhere(base, num) {
-  if (base >= 0 && base < 2) {
-    if (num < storageid[base]) {
-      setstorageid(base, num);
+/**
+ * Updates the watch's record of the last data index after being informed by the phone.
+ * This happens when the phone has more recent data than the watch.
+ * @param dataSourceIndex The index of the data source (0 or 1).
+ * @param serverLastIndex The last index as reported by the phone.
+ */
+function updateLastKnownIndexFromServer(dataSourceIndex, serverLastIndex) {
+  if (dataSourceIndex >= 0 && dataSourceIndex < 2) {
+    if (serverLastIndex < storageid[dataSourceIndex]) {
+      setstorageid(dataSourceIndex, serverLastIndex);
     }
   }
+
+  // Acknowledge that the index was set.
   Communications.transmit([DIDSETENDNUM], null, new CommListener());
 }
 
+/**
+ * The main router for all incoming messages from the phone.
+ * It parses the message and dispatches it to the appropriate handler function.
+ *
+ * The protocol uses a numeric 'messageType' as the first element of the array.
+ * The size of the array determines the message format.
+ *
+ * @param data The message received from the phone, typically an Array.
+ */
 function processIncomingMessage(data) {
   if (data instanceof Toybox.Lang.Array && data.size() > 0) {
-    var key = data[0] as Lang.Number;
+    var messageType = data[0] as Lang.Number;
     switch (data.size()) {
       case 1:
-        switch (key) {
+        switch (messageType) {
           case START:
-            startglucose();
-            return;
+            startGlucoseStreaming();
+            break;
           case STOPALARM:
             AppSettings.isAlarmActive = false;
             Communications.transmit([GOTSTOPALARM], null, new CommListener());
-            return;
+            break;
           default:
-            System.println("Key " + key);
-            return;
+            System.println("Unknown message of size 1: " + messageType);
+            break;
         }
+
+      // --- Messages with two elements (command + payload) ---
       case 2:
         {
-          var num = data[1];
-          switch (key) {
+          var payload = data[1];
+          switch (messageType) {
             case COLORBLACK:
-              receivecolor(num);
-              return;
+              updateBackgroundColor(payload);
+              break;
             case GLUCOSE:
-              setglucose(num);
-              gotglucose();
-              return;
+              updateGlucoseData(payload);
+              ackGlucose();
+              break;
             case HEART:
-              heartrate(num);
-              return;
+              heartrate(payload);
+              break;
             case PUTLABELS:
-              putlabels(num);
-              return;
+              storeLabels(payload);
+              break;
             case PUTPRECISION:
-              putprec(num);
-              return;
+              storePrecisionValues(payload);
+              break;
             case SHORTCUTS:
-              putcuts(num);
-              return;
+              storeShortcuts(payload);
+              break;
             case GETENDNUM:
-              if (num == 0 && lowestchange[0] == null) {
+              // The phone is asking for our last known index.
+              if (payload == 0 && lowestchange[0] == null) {
+                // If we have no data for source 0, just acknowledge.
                 ackReceived();
               } else {
-                sendendnum(num);
+                sendLastKnownIndexToPhone(payload);
               }
-              return;
+              break;
             default:
-              System.println("Key " + key + " num " + num);
-              return;
+              System.println("Key " + messageType + " num " + payload);
+              break;
           }
         }
         break;
+
+      // --- Messages with three elements ---
       case 3:
         {
-          var base = data[1];
-          var num2 = data[2];
-          switch (key) {
+          var dataSourceIndex = data[1];
+          var indexOrValue = data[2];
+          switch (messageType) {
             case NUMS:
-              numdataone(base, num2);
-              return;
+              requestDataFromIndex(dataSourceIndex, indexOrValue);
+              break;
             case SETENDNUM:
-              setendhere(base, num2);
-              return;
+              updateLastKnownIndexFromServer(dataSourceIndex, indexOrValue);
+              break;
             case MORENUMS:
-              setlastnum(base, num2);
-              numdata(base, num2);
-              return;
+              handleMoreDataNotification(dataSourceIndex, indexOrValue);
+              requestNextDataChunk(dataSourceIndex, indexOrValue);
+              break;
             case DELETED:
-              deletedsend(base, num2);
-              return;
+              onDataRecordsDeleted(dataSourceIndex, indexOrValue);
+              break;
             default:
-              System.println("Key=" + key + " base=" + base + " num2=" + num2);
-              return;
+              System.println("Key=" + messageType + " base=" + dataSourceIndex + " num2=" + indexOrValue);
+              break;
           }
         }
         break;
       case 4:
-        switch (key) {
+        switch (messageType) {
           case DELETE:
-            netdelete(data[1], data[2], data[3]);
-            return;
+            performDeletion(data[1], data[2], data[3]);
+            break;
         }
 
         break;
       case 5:
-        switch (key) {
+        switch (messageType) {
           case PUTNUMS:
-            putdata(data[1], data[2], data[3], data[4]);
-            return;
+            storeReceivedDataChunk(data[1], data[2], data[3], data[4]);
+            break;
           default:
-            return;
+            System.println("Unknown key for size 5: " + messageType);
+            break;
         }
 
       default:
-        System.println("len=" + data.size());
-        return;
+        System.println("Received message with unhandled length: " + data.size());
+        break;
     }
   } else {
     switch (data) {

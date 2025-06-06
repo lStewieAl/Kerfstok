@@ -76,7 +76,7 @@ function delval(base, id) {
   Storage.deleteValue(instorage(base, id));
 }
 
-function putdata(base, begin, end, ar) {
+function storeReceivedDataChunk(base, begin, end, ar) {
   var len = ar.size();
   var list = new CommListener();
   if (end - begin != len) {
@@ -153,7 +153,7 @@ function getlastnum(base) {
   return lowestchange[base];
 }
 
-function setlastnum(base, num) {
+function handleMoreDataNotification(base, num) {
   var low = lowestchange[base];
   if (low == null || num > low) {
     setlowestchange(base, num);
@@ -164,7 +164,7 @@ function setvarnr() {
   varnr = vars.size() < precvars.size() ? vars.size() : precvars.size();
 }
 
-function putprec(ar) {
+function storePrecisionValues(ar) {
   if (ar != null && ar.size() > 0) {
     precvars = ar;
     setvarnr();
@@ -173,7 +173,7 @@ function putprec(ar) {
   Communications.transmit([RECEIVEDPRECISION], null, new CommListener());
 }
 
-function putlabels(ar) {
+function storeLabels(ar) {
   if (ar != null && ar.size() > 0) {
     vars = ar;
     setvarnr();
@@ -184,7 +184,7 @@ function putlabels(ar) {
 }
 
 var shortcuts = [];
-function putcuts(ar) {
+function storeShortcuts(ar) {
   Storage.setValue("shortcuts", ar);
   shortcuts = ar;
   Communications.transmit([RECEIVEDCUTS], null, new CommListener());
@@ -216,7 +216,7 @@ function delete(base, datanum) {
   WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
 }
 
-function deletedsend(base, num) {
+function onDataRecordsDeleted(base, num) {
   if (num == lowestchange[base]) {
     var old = oldlowest[base];
     if (old > lowestchange[base]) {

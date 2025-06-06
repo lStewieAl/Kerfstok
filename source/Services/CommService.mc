@@ -62,7 +62,7 @@ function heartrate(starttime) {
   }
 }
 
-function receivecolor(num) as Void {
+function updateBackgroundColor(num) as Void {
   Storage.setValue("reversecolor", num);
   AppSettings.updateThemeColors(num);
   Communications.transmit([COLORBLACK], null, new CommListener());

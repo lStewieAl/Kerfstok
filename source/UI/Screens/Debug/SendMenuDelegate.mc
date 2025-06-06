@@ -15,7 +15,7 @@ class lastChange {
   function storedata(numstr) {
     var last = numstr.toNumber();
     if (last >= 0 && last >= storageid[0] - 512 && last < storageid[0]) {
-      setlastnum(0, last);
+      handleMoreDataNotification(0, last);
       return true;
     }
     return false;
@@ -54,7 +54,7 @@ class SendMenuDelegate extends WatchUi.MenuInputDelegate {
       case 1:
         var last = getlastnum(0);
         System.println("numdata(" + last + ")");
-        numdata(0, last);
+        requestNextDataChunk(0, last);
         break;
       case 2:
         getnum(new lastChange(), "LastNum");
@@ -63,7 +63,7 @@ class SendMenuDelegate extends WatchUi.MenuInputDelegate {
         makedata(512);
         break;
       case 4:
-        putlabels(["Een", "Twee", "Drie", "Vier", "Vijf", "Zes", "Zeven"]);
+        storeLabels(["Een", "Twee", "Drie", "Vier", "Vijf", "Zes", "Zeven"]);
         break;
       default:
         System.println("Unknown menuitem " + item);

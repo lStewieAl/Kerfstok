@@ -20,7 +20,7 @@ class StopSportConfirmationDelegate extends AskDelegate {
   }
 }
 
-var glufield = null;
+var glucoseDataField = null;
 var activityrecord = null;
 var sportdel = null;
 (:debug)
@@ -36,7 +36,7 @@ function mkglucose() {
   var gegs = ["3MH0045FKCD", unixnu, val, trend, 0, unit];
   System.println("dir=" + dir + " dirval=" + dirval + " trend=" + trend);
   unititer++;
-  setglucose(gegs);
+  updateGlucoseData(gegs);
 }
 
 function askstopsport() {

@@ -32,11 +32,11 @@ function sendnums(type, base, num) {
   transbase(type, base, it, data);
 }
 
-function numdata(base, num) {
+function requestNextDataChunk(base, num) {
   sendnums(NUMS, base, num);
 }
 
-function numdataone(base, num) {
+function requestDataFromIndex(base, num) {
   if (base == 0 && lowestchange[0] == null) {
     lowestchange[0] = num;
   }
@@ -49,11 +49,11 @@ function havenums(base) {
 
 function asklowest() {
   if (!AppSettings.isGlucoCommsActive) {
-    startglucose();
+    startGlucoseStreaming();
   }
 }
 
-function startglucose() {
+function startGlucoseStreaming() {
   Communications.transmit(
     [START, lowestchange[0] == null],
     null,
@@ -62,9 +62,9 @@ function startglucose() {
   AppSettings.isGlucoCommsActive = true;
 }
 
-function gotglucose() {
+function ackGlucose() {
   if (!AppSettings.isGlucoCommsActive) {
-    startglucose();
+    startGlucoseStreaming();
   } else {
     Communications.transmit([GOTGLUCOSE], null, new CommListener());
   }
@@ -81,7 +81,7 @@ function senddelete(base, pos) {
   Communications.transmit([DELETE, base, pos], null, new CommListener());
 }
 
-function netdelete(base, num, end) {
+function performDeletion(base, num, end) {
   var last = end - 1;
   for (var it = num; it < last; it++) {
     delval(base, it);

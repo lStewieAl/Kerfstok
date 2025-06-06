@@ -32,13 +32,13 @@ class AskView extends WatchUi.View {
     );
 
     dc.setColor(AppSettings.foregroundColor, Gfx.COLOR_TRANSPARENT);
-    var vers = unixnu - glucosetime;
+    var vers = unixnu - glucoseTimestamp;
     if (vers < maxver) {
       dc.drawText(
         width * 0.95,
         height * 0.35,
         Gfx.FONT_XTINY,
-        glucosestr + (glucoserate == -20 ? ">" : glucoserate == 20 ? "<" : ""),
+        formattedGlucoseString + (rateOfChange == -20 ? ">" : rateOfChange == 20 ? "<" : ""),
         Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_RIGHT
       );
     }

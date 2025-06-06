@@ -62,13 +62,13 @@ class SportStartView extends WatchUi.View {
     );
 
     var unixnu = Time.now().value();
-    var vers = unixnu - glucosetime;
+    var vers = unixnu - glucoseTimestamp;
     if (vers < maxver) {
       dc.drawText(
         0,
         height * 0.5,
         Gfx.FONT_XTINY,
-        glucosestr + (glucoserate == -20 ? ">" : glucoserate == 20 ? "<" : ""),
+        formattedGlucoseString + (rateOfChange == -20 ? ">" : rateOfChange == 20 ? "<" : ""),
         Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_LEFT
       );
     }

@@ -75,7 +75,7 @@ class AppMain extends Application.AppBase {
 
   function onStop(state) as Void {
     stopglucose();
-    Storage.setValue("glunits", glunits);
+    Storage.setValue("glunits", glucoseUnit);
     for (var i = 0, n = numset.size(); i < n; i++) {
       var nr = numset[i];
       if (memnum[nr].size()) {

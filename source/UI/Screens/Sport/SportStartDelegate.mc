@@ -9,7 +9,7 @@ using Toybox.Position;
 using Toybox.FitContributor as Fit;
 using Toybox.Application.Storage;
 
-var glunits = 0;
+var glucoseUnit = 0;
 var lapstart = 0;
 
 var positionInfo = null;
@@ -132,7 +132,7 @@ class SportStartDelegate extends WatchUi.BehaviorDelegate {
         Position.LOCATION_DISABLE,
         method(:onPosition)
       );
-      glufield = null;
+      glucoseDataField = null;
       energyField = null;
       activityrecord.save();
       activityrecord = null;
@@ -156,11 +156,11 @@ class SportStartDelegate extends WatchUi.BehaviorDelegate {
         :sport => sel,
         :subSport => subsp,
       });
-      glufield = activityrecord.createField(
+      glucoseDataField = activityrecord.createField(
         "Glucose",
-        glunits,
+        glucoseUnit,
         Fit.DATA_TYPE_FLOAT,
-        { :mesgType => Fit.MESG_TYPE_RECORD, :units => glunitstr[glunits] }
+        { :mesgType => Fit.MESG_TYPE_RECORD, :units => glunitstr[glucoseUnit] }
       );
 
       energyField = activityrecord.createField(

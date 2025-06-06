@@ -138,12 +138,13 @@ class init {
     for (var i = 0; i < 2; i++) {
       lowestchange[i] = getStoragelowestchange(i);
     }
+
     AppSettings.updateThemeColors(Storage.getValue("reversecolor"));
     initdisplay();
     readsports();
-    setglunit(Storage.getValue("glunits"));
+    setGlucoseUnit(Storage.getValue("glunits"));
     if (!AppSettings.isGlucoCommsActive || lowestchange[0] == null) {
-      startglucose();
+      startGlucoseStreaming();
     }
   }
 }
