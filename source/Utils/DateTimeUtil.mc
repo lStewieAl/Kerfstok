@@ -7,9 +7,6 @@ module DateTimeUtil {
   public var monthNames as Lang.Array<Lang.String> =
     new [12] as Lang.Array<Lang.String>;
   public function initializeMonths() as Void {
-    if (monthNames != null) {
-      return;
-    }
     var options = { :year => 2020, :month => 1, :day => 4, :hour => 0 };
     for (var i = 0; i < 12; i++) {
       options[:month] = i + 1;
