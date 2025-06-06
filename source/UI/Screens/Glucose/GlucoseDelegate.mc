@@ -4,19 +4,21 @@ using Toybox.System;
 using Toybox.Math;
 using Toybox.Time;
 using Toybox.ActivityRecording;
+using Toybox.Lang;
 
 class StopSportConfirmationDelegate extends AskDelegate {
   function initialize() {
     AskDelegate.initialize();
   }
 
-  function onResponse(response) {
+  function onResponse(response) as Lang.Boolean {
     if (response == WatchUi.CONFIRM_YES) {
       sportdel.stopsport();
       sportdel = null;
     } else {
       activityrecord.start();
     }
+    return true;
   }
 }
 

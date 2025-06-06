@@ -1,4 +1,6 @@
 using Toybox.WatchUi;
+using Toybox.Lang;
+
 class FarWayConfirmationDelegate extends WatchUi.ConfirmationDelegate {
   var base;
   var datanum;
@@ -10,7 +12,7 @@ class FarWayConfirmationDelegate extends WatchUi.ConfirmationDelegate {
     ConfirmationDelegate.initialize();
   }
 
-  function onResponse(response) {
+  function onResponse(response) as Lang.Boolean {
     if (response == WatchUi.CONFIRM_YES) {
       moveondate(base, datanum, val);
       havenums(base);

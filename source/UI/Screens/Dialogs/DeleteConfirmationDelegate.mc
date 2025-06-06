@@ -1,4 +1,6 @@
 using Toybox.WatchUi;
+using Toybox.Lang;
+
 class DeleteConfirmationDelegate extends WatchUi.ConfirmationDelegate {
   var base;
   var datanum;
@@ -9,7 +11,7 @@ class DeleteConfirmationDelegate extends WatchUi.ConfirmationDelegate {
     datanum = dat;
   }
 
-  function onResponse(response) {
+  function onResponse(response) as Lang.Boolean {
     if (response == WatchUi.CONFIRM_YES) {
       delete(base, datanum);
     }
