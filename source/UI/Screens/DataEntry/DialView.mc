@@ -53,12 +53,7 @@ class DialView extends WatchUi.View {
       (edge1040 || edgeexplore2 || edge830 ? hnumfont : 0);
   }
 
-  function onShow() {
-    toshow = 1;
-  }
-
   function onUpdate(dc) {
-    if (toshow) {
       dc.clearClip();
       dc.setColor(Gfx.COLOR_WHITE, Graphics.COLOR_BLACK);
 
@@ -98,8 +93,6 @@ class DialView extends WatchUi.View {
         Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER
       );
       dc.setClip(xnumbers, hmidnum, wnumfont * maxline, (hnumfont * 10) / 3);
-      toshow = 0;
-    }
 
     dc.setColor(Gfx.COLOR_WHITE, Graphics.COLOR_BLACK);
     dc.clear();
