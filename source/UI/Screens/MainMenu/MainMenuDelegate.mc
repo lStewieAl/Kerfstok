@@ -24,6 +24,14 @@ class MainMenuDelegate extends WatchUi.BehaviorDelegate {
     } else {
       askstopsport();
     }
+
+    if (keyEvent.getKey() == KEY_ENTER) {
+        WatchUi.pushView(
+          new GlucoseView(),
+          new GlucoseDelegate(),
+          WatchUi.SLIDE_IMMEDIATE
+        );
+    }
     return true;
   }
 
