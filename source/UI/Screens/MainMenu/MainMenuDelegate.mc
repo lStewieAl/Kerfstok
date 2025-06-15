@@ -19,6 +19,10 @@ class MainMenuDelegate extends WatchUi.BehaviorDelegate {
   }
 
   function onKey(keyEvent as WatchUi.KeyEvent) as Lang.Boolean {
+    if (!AppSettings.hasInitializedHeight) {
+      return true;
+    }
+
     if (AppSettings.isAlarmActive) {
       stopalarm();
     } else {

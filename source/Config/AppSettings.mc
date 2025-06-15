@@ -20,6 +20,7 @@ module AppSettings {
   }
 
   // Application states
-  public var isAlarmActive as Lang.Boolean = false;
-  public var isGlucoCommsActive as Lang.Boolean = false; // was AppSettings.isGlucoCommsActive
+  public var isAlarmActive as Boolean = false;
+  public var isGlucoCommsActive as Boolean = false;
+  public var hasInitializedHeight as Boolean = false;
 }

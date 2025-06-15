@@ -5,6 +5,7 @@ using Toybox.System;
 const firstrows = 4;
 class MainMenuView extends WatchUi.View {
   hidden var rowHeight;
+
   function initialize() {
     View.initialize();
     clockFont =
@@ -22,10 +23,12 @@ class MainMenuView extends WatchUi.View {
       dc.getFontHeight(clockFont) /
       (edge1040 || edge840 ? 1.8 : edge830 ? 2.1 : 2.7);
     theight = dc.getFontHeight(Gfx.FONT_NUMBER_HOT);
+
+    AppSettings.hasInitializedHeight = true;
   }
 
   function onUpdate(dc) {
-    if (clockHeight != null) {
+    if (AppSettings.hasInitializedHeight) {
       dc.clearClip();
       dc.setColor(AppSettings.foregroundColor, AppSettings.backgroundColor);
       dc.clear();
