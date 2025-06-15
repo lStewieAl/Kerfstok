@@ -2,13 +2,14 @@ using Toybox.WatchUi;
 using Toybox.System;
 using Toybox.Graphics as Gfx;
 using Toybox.Math;
+import Toybox.Lang;
 
-var numset = [];
+var numset as Array<Number> = [];
 class RetrieveDelegate extends WatchUi.BehaviorDelegate {
   var from;
-  var nums;
+  var nums as Array<Char>;
   var onscr = 4;
-  function initialize(n) {
+  function initialize(n as Array<Char>) {
     nums = n;
     if (numset.size() < 1) {
       from = 0;
@@ -29,7 +30,7 @@ class RetrieveDelegate extends WatchUi.BehaviorDelegate {
       var id = (co[1] * onscr) / height + from;
       if (id < numset.size()) {
         fromback = false;
-        nums.nums.addAll(memnum[numset[id]]);
+        nums.addAll(memnum[numset[id]]);
         WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
       } else {
         beep4();

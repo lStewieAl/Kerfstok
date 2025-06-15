@@ -2,12 +2,13 @@ using Toybox.WatchUi;
 using Toybox.System;
 using Toybox.Graphics as Gfx;
 using Toybox.Math;
+import Toybox.Lang;
 
 class CutDelegate extends WatchUi.BehaviorDelegate {
-  var from = 0;
-  var onscr = 4;
-  var nums;
-  function initialize(n) {
+  hidden var from = 0;
+  hidden var onscr = 4;
+  hidden var nums as Array<Char>;
+  function initialize(n as Array<Char>) {
     nums = n;
     BehaviorDelegate.initialize();
   }
@@ -23,7 +24,7 @@ class CutDelegate extends WatchUi.BehaviorDelegate {
       var id = (co[1] * onscr) / height + from;
       if (id < shortcuts.size()) {
         fromback = false;
-        nums.nums.addAll(shortcuts[id][1].toCharArray());
+        nums.addAll(shortcuts[id][1].toCharArray());
         WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
       }
     }

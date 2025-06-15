@@ -1,7 +1,7 @@
 using Toybox.WatchUi;
 using Toybox.System;
 using Toybox.Math;
-using Toybox.Lang;
+import Toybox.Lang;
 using Toybox.StringUtil;
 using Toybox.Time;
 using Toybox.Application.Storage;
@@ -45,10 +45,10 @@ class numStore {
   }
 }
 
-var operated = 0;
+var operated as Boolean = false;
 
-function calcer(nums) {
-  var get = calc(nums.nums, nums.nums.size());
+function calcer(nums as Array<Char>) as String? {
+  var get = calc(nums, nums.size());
   if (get == null || !(get has :abs)) {
     return null;
   }
@@ -56,27 +56,27 @@ function calcer(nums) {
 }
 
 class DialDelegate extends WatchUi.BehaviorDelegate {
-  var nums;
+  var nums as Array<Char>;
   var endcl;
-  var saved = [];
+  var saved as Array<String> = [];
 
   const POINT = '.';
-  function initialize(end, numin as number) {
+  function initialize(end, numin as Array<Char>) {
     endcl = end;
     nums = numin;
     BehaviorDelegate.initialize();
   }
 
   function onBack() {
-    if (nums.nums.size() > 0) {
+    if (nums.size() > 0) {
       if (!fromback) {
-        var str = StringUtil.charArrayToString(nums.nums);
+        var str = StringUtil.charArrayToString(nums);
         if (saved.size() == 0 || !saved[saved.size() - 1].equals(str)) {
           saved.add(str);
         }
         fromback = true;
       }
-      nums.nums = nums.nums.slice(0, nums.nums.size() - 1);
+      nums = nums.slice(0, nums.size() - 1);
       WatchUi.requestUpdate();
     } else {
       WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
@@ -89,7 +89,7 @@ class DialDelegate extends WatchUi.BehaviorDelegate {
       var co = clickEvent.getCoordinates();
       var x = co[0] - width / 2;
       var y = co[1] - height / 2;
-      var rsq = Math.pow(x, 2) + Math.pow(y, 2);
+      var rsq = x * x + y * y;
       fromback = false;
       if (rsq < 2500) {
         var str = calcer(nums);
@@ -98,7 +98,7 @@ class DialDelegate extends WatchUi.BehaviorDelegate {
           return false;
         }
 
-        var numstr = StringUtil.charArrayToString(nums.nums);
+        var numstr = StringUtil.charArrayToString(nums);
         if (numstr.equals(str)) {
           if (endcl.storedata(numstr)) {
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
@@ -108,18 +108,18 @@ class DialDelegate extends WatchUi.BehaviorDelegate {
           return true;
         }
 
-        operated = 0;
-        nums.nums = str.toCharArray();
+        operated = false;
+        nums = str.toCharArray();
         WatchUi.requestUpdate();
         return true;
       } else {
-        if (nums.nums.size() < nummax) {
+        if (nums.size() < nummax) {
           var arc = 180.0d * (1.0d - Math.atan2(x, y) / Math.PI);
 
           if (arc < 18.0 || arc > 342.0) {
-            nums.nums = nums.nums.add('0');
+            nums = nums.add('0');
           } else {
-            nums.nums = nums.nums.add(
+            nums = nums.add(
               (Math.floor((arc + 18) / 36).toNumber() + 48).toChar()
             );
           }
@@ -134,9 +134,9 @@ class DialDelegate extends WatchUi.BehaviorDelegate {
   }
 
   function onNextPage() {
-    if (operated == 0) {
-      if (nums.nums.size()) {
-        var str = StringUtil.charArrayToString(nums.nums);
+    if (!operated) {
+      if (nums.size()) {
+        var str = StringUtil.charArrayToString(nums);
         if (saved.size() == 0 || !saved[saved.size() - 1].equals(str)) {
           saved.add(str);
         }
@@ -154,11 +154,11 @@ class DialDelegate extends WatchUi.BehaviorDelegate {
     if (AppSettings.isAlarmActive) {
       stopalarm();
     } else {
-      if (nums.nums.size() > nummax - 2) {
+      if (nums.size() > nummax - 2) {
         beep2();
       } else {
         fromback = false;
-        nums.nums = nums.nums.add(POINT);
+        nums = nums.add(POINT);
         WatchUi.requestUpdate();
       }
     }

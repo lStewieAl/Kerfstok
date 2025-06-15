@@ -2,7 +2,7 @@ using Toybox.WatchUi;
 using Toybox.Application.Storage;
 
 using Toybox.Communications;
-using Toybox.Lang;
+import Toybox.Lang;
 using Toybox.Time;
 using Toybox.Time.Gregorian;
 using Toybox.System;
@@ -45,15 +45,8 @@ class varChange {
   }
 }
 
-class number {
-  var nums;
-  function initialize() {
-    nums = [];
-  }
-}
-
 function getnum(changer, label) {
-  var nums = new number();
+  var nums = new Array<Char>[0];
   var dial = new DialDelegate(changer, nums);
   var vor = changer.orig();
   if (vor.length()) {

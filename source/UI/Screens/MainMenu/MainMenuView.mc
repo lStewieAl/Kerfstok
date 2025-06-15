@@ -4,7 +4,7 @@ using Toybox.System;
 
 const firstrows = 4;
 class MainMenuView extends WatchUi.View {
-  var hmid;
+  hidden var rowHeight;
   function initialize() {
     View.initialize();
     clockFont =
@@ -17,7 +17,7 @@ class MainMenuView extends WatchUi.View {
     System.println("width=" + width + " height=" + height);
     wmid = width / 2;
 
-    hmid = height / (firstrows + 1);
+    rowHeight = height / (firstrows + 1);
     clockHeight =
       dc.getFontHeight(clockFont) /
       (edge1040 || edge840 ? 1.8 : edge830 ? 2.1 : 2.7);
@@ -39,7 +39,7 @@ class MainMenuView extends WatchUi.View {
       );
       dc.drawText(
         wmid,
-        hmid,
+        rowHeight,
         Gfx.FONT_MEDIUM,
         "Input",
         Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER
@@ -47,7 +47,7 @@ class MainMenuView extends WatchUi.View {
       if (storageid[0] > 0 || storageid[1] > 0) {
         dc.drawText(
           wmid,
-          2 * hmid,
+          2 * rowHeight,
           Gfx.FONT_MEDIUM,
           "View",
           Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER
@@ -56,14 +56,14 @@ class MainMenuView extends WatchUi.View {
 
       dc.drawText(
         wmid,
-        3 * hmid,
+        3 * rowHeight,
         Gfx.FONT_MEDIUM,
         "Watch face",
         Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER
       );
       dc.drawText(
         wmid,
-        4 * hmid,
+        4 * rowHeight,
         Gfx.FONT_MEDIUM,
         "Sport",
         Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER

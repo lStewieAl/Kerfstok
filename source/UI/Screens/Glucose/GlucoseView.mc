@@ -27,7 +27,7 @@ function drawarrow(dc, width, height, xorg, yorg, density) {
 
   var rx = getx - x1;
   var ry = gety - y1;
-  var rlen = Math.sqrt(Math.pow(rx, 2) + Math.pow(ry, 2));
+  var rlen = Math.sqrt(rx * rx + ry * ry);
 
   rx /= rlen;
   ry /= rlen;

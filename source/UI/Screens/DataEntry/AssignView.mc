@@ -3,9 +3,9 @@ using Toybox.Graphics as Gfx;
 using Toybox.System;
 
 class AssignView extends WatchUi.View {
-  var geg;
-  function initialize(g) {
-    geg = g;
+  var _delegate;
+  function initialize(g as AssignDelegate) {
+    _delegate = g;
     View.initialize();
   }
 
@@ -17,7 +17,7 @@ class AssignView extends WatchUi.View {
     dc.clear();
 
     var wmid = width / 2;
-    var hmid = height / (geg.onscr + 1);
+    var hmid = height / (_delegate.onscr + 1);
     var myTime = System.getClockTime();
     dc.drawText(
       wmid,
@@ -26,14 +26,14 @@ class AssignView extends WatchUi.View {
       myTime.hour.format("%02d") + ":" + myTime.min.format("%02d"),
       Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER
     );
-    for (var i = 0; i < geg.onscr; i++) {
-      var val = geg.from + i;
+    for (var i = 0; i < _delegate.onscr; i++) {
+      var val = _delegate.from + i;
       if (val >= memlab.size()) {
         return;
       }
       dc.drawText(
         wmid,
-        hmid * (geg.onscr - i),
+        hmid * (_delegate.onscr - i),
         Gfx.FONT_MEDIUM,
         memlab[val],
         Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER

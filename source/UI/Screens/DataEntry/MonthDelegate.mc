@@ -71,7 +71,7 @@ class MonthDelegate extends WatchUi.BehaviorDelegate {
       var co = clickEvent.getCoordinates();
       var x = co[0] - width / 2;
       var y = co[1] - height / 2;
-      var rsq = Math.pow(x, 2) + Math.pow(y, 2);
+      var rsq = x * x + y * y;
       var mo;
       if (rsq < straal2) {
         if (y > 0) {

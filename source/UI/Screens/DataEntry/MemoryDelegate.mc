@@ -1,10 +1,11 @@
 using Toybox.WatchUi;
-using Toybox.Lang;
 using Toybox.System;
+import Toybox.Lang;
 
 class MemoryDelegate extends WatchUi.BehaviorDelegate {
-  var gegs, nums;
-  function initialize(g, n) {
+  var gegs;
+  var nums as Array<Char>;
+  function initialize(g, n as Array<Char>) {
     gegs = g;
     nums = n;
     BehaviorDelegate.initialize();
@@ -27,7 +28,7 @@ class MemoryDelegate extends WatchUi.BehaviorDelegate {
       p += x;
       if (p < gegs.previous.size()) {
         fromback = false;
-        nums.nums.addAll(gegs.previous[p].toCharArray());
+        nums.addAll(gegs.previous[p].toCharArray());
         WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
       }
     }

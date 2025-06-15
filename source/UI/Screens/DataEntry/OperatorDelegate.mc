@@ -2,11 +2,12 @@ using Toybox.WatchUi;
 using Toybox.Lang;
 using Toybox.Math;
 using Toybox.StringUtil;
+import Toybox.Lang;
 
 class OperatorDelegate extends WatchUi.BehaviorDelegate {
-  var nums;
+  var nums as Array<Char>;
   var straal2;
-  function initialize(n) {
+  function initialize(n as Array<Char>) {
     nums = n;
     straal2 = Math.pow(height / 4.0, 2);
     BehaviorDelegate.initialize();
@@ -22,24 +23,24 @@ class OperatorDelegate extends WatchUi.BehaviorDelegate {
       var co = clickEvent.getCoordinates();
       var x = co[0] - width / 2;
       var y = co[1] - height / 2;
-      var rsq = Math.pow(x, 2) + Math.pow(y, 2);
+      var rsq = x * x + y * y;
       var len = operators.size();
       var mo;
       if (rsq < straal2) {
         if (y < 0) {
-          var getstr = StringUtil.charArrayToString(nums.nums);
+          var getstr = StringUtil.charArrayToString(nums);
           var floval = getstr.toFloat();
           if (floval != null) {
             var num = Math.round(floval);
             var str = num.format("%d");
-            nums.nums = str.toCharArray();
+            nums = str.toCharArray();
           } else {
             beep4();
           }
         } else {
           var str = calcer(nums);
-          if (str) {
-            nums.nums = str.toCharArray();
+          if (str != null) {
+            nums = str.toCharArray();
           }
         }
       } else {
@@ -48,15 +49,15 @@ class OperatorDelegate extends WatchUi.BehaviorDelegate {
         var arc = 180.0d * (1.0d - Math.atan2(x, y) / Math.PI);
 
         if (arc < hpart || arc > 360 - hpart) {
-          nums.nums = [];
+          nums = [];
         } else {
           mo = Math.floor((arc + hpart) / part).toNumber();
 
           var chr = operators[mo].toCharArray();
-          if (nums.nums.size() + chr.size() <= nummax) {
-            nums.nums = nums.nums.addAll(chr);
+          if (nums.size() + chr.size() <= nummax) {
+            nums = nums.addAll(chr);
             if (!(chr.size() == 1 && chr[0] == '.')) {
-              operated = 1;
+              operated = true;
             }
           } else {
             beep2();

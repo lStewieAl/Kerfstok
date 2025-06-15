@@ -5,8 +5,8 @@ using Toybox.Graphics as Gfx;
 using Toybox.Math;
 using Toybox.Time;
 using Toybox.Time.Gregorian;
+import Toybox.Lang;
 
-var toshow = 1;
 const maxline = 11;
 class DialView extends WatchUi.View {
   const numsfont = venusq2
@@ -16,11 +16,11 @@ class DialView extends WatchUi.View {
     : Gfx.FONT_TINY;
 
   const dialnumberfont = venusq2 ? Gfx.FONT_NUMBER_MEDIUM : Gfx.FONT_NUMBER_HOT;
-  var nums;
+  var nums as Array<Char>;
 
   var variable;
   var timeoff = 0.0;
-  function initialize(numin, vari) {
+  function initialize(numin as Array<Char>, vari) {
     View.initialize();
     variable = vari;
     nums = numin;
@@ -98,7 +98,7 @@ class DialView extends WatchUi.View {
     dc.clear();
     dc.setColor(Gfx.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 
-    var getstr = StringUtil.charArrayToString(nums.nums);
+    var getstr = StringUtil.charArrayToString(nums);
     var en = (getstr.length() + maxline - 1) / maxline;
     for (var i = 0; i < en; i++) {
       var sub = getstr.substring(i * maxline, (i + 1) * maxline);

@@ -2,12 +2,14 @@ using Toybox.WatchUi;
 using Toybox.Graphics as Gfx;
 using Toybox.StringUtil;
 using Toybox.System;
-var operators = ["C", "^", "*", "/", "+", "-", "(", ")", "."];
+import Toybox.Lang;
+
+var operators as Array<String> = ["C", "^", "*", "/", "+", "-", "(", ")", "."];
 class OperatorView extends WatchUi.View {
   const numsfont = Gfx.FONT_TINY;
   const operatorfont = Gfx.FONT_LARGE;
-  var nums;
-  function initialize(numin) {
+  var nums as Array<Char>;
+  function initialize(numin as Array<Char>) {
     View.initialize();
     nums = numin;
   }
@@ -66,7 +68,7 @@ class OperatorView extends WatchUi.View {
       "Round",
       Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER
     );
-    var getstr = StringUtil.charArrayToString(nums.nums);
+    var getstr = StringUtil.charArrayToString(nums);
     var en = (getstr.length() + maxline - 1) / maxline;
     for (var i = 0; i < en; i++) {
       var sub = getstr.substring(i * maxline, (i + 1) * maxline);

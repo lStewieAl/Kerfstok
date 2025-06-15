@@ -40,7 +40,6 @@ class init {
   const mile = 1609.34;
 
   function timerCallback() as Void {
-    toshow = 1;
     WatchUi.requestUpdate();
     if (AppSettings.isAlarmActive) {
       generatealarm();

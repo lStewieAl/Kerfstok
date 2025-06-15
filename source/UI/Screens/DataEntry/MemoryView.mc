@@ -16,7 +16,7 @@ class MemoryView extends WatchUi.View {
       startpos = 0;
     }
     str = height / 2;
-    str2 = Math.pow(str, 2);
+    str2 = str * str;
     View.initialize();
   }
 

@@ -3,9 +3,9 @@ using Toybox.Graphics as Gfx;
 using Toybox.System;
 
 class RetrieveView extends WatchUi.View {
-  var geg;
-  function initialize(g) {
-    geg = g;
+  hidden var _delegate as RetrieveDelegate;
+  function initialize(g as RetrieveDelegate) {
+    _delegate = g;
     View.initialize();
   }
 
@@ -14,7 +14,7 @@ class RetrieveView extends WatchUi.View {
   function onUpdate(dc) {
     dc.clearClip();
     var wmid = width / 2;
-    var hmid = height / (geg.onscr + 1);
+    var hmid = height / (_delegate.onscr + 1);
     dc.setColor(AppSettings.foregroundColor, AppSettings.backgroundColor);
     dc.clear();
 
@@ -27,8 +27,8 @@ class RetrieveView extends WatchUi.View {
       Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER
     );
 
-    for (var i = 0; i < geg.onscr; i++) {
-      var val = geg.from + i;
+    for (var i = 0; i < _delegate.onscr; i++) {
+      var val = _delegate.from + i;
       if (val >= numset.size()) {
         return;
       }
