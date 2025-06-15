@@ -45,14 +45,45 @@ class varChange {
   }
 }
 
+class EntryData {
+  var nums as Array<Char>;
+  function initialize() {
+    nums = [];
+  }
+
+  function push(c as Char) as Void {
+    nums.add(c);
+  }
+
+  function pop() as Void {
+    nums = nums.slice(0, nums.size() - 1);
+  }
+
+  function size() as Number {
+    return nums.size();
+  }
+
+  function toString() as String {
+    return StringUtil.charArrayToString(nums);
+  }
+
+  function addPoint() as Void {
+    nums.add('.');
+  }
+
+  function addAll(arr as Array<Char>) as Array<Char> {
+    return nums.addAll(arr);
+  }
+}
+
 function getnum(changer, label) {
-  var nums = new Array<Char>[0];
-  var dial = new DialDelegate(changer, nums);
+  var entryData = new EntryData();
+  var dial = new DialDelegate(changer, entryData);
   var vor = changer.orig();
   if (vor.length()) {
     dial.saved.add(vor);
   }
-  WatchUi.pushView(new DialView(nums, label), dial, WatchUi.SLIDE_IMMEDIATE);
+  WatchUi.pushView(new DialView(entryData, label), dial, WatchUi.SLIDE_IMMEDIATE);
 }
 
 class ItemDelegate extends WatchUi.BehaviorDelegate {

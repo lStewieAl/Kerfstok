@@ -7,8 +7,8 @@ import Toybox.Lang;
 class CutDelegate extends WatchUi.BehaviorDelegate {
   hidden var from = 0;
   hidden var onscr = 4;
-  hidden var nums as Array<Char>;
-  function initialize(n as Array<Char>) {
+  hidden var nums as EntryData;
+  function initialize(n as EntryData) {
     nums = n;
     BehaviorDelegate.initialize();
   }

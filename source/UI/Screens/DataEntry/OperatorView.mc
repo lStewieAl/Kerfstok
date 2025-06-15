@@ -8,8 +8,8 @@ var operators as Array<String> = ["C", "^", "*", "/", "+", "-", "(", ")", "."];
 class OperatorView extends WatchUi.View {
   const numsfont = Gfx.FONT_TINY;
   const operatorfont = Gfx.FONT_LARGE;
-  var nums as Array<Char>;
-  function initialize(numin as Array<Char>) {
+  var nums as EntryData;
+  function initialize(numin as EntryData) {
     View.initialize();
     nums = numin;
   }
@@ -68,7 +68,7 @@ class OperatorView extends WatchUi.View {
       "Round",
       Gfx.TEXT_JUSTIFY_VCENTER | Gfx.TEXT_JUSTIFY_CENTER
     );
-    var getstr = StringUtil.charArrayToString(nums);
+    var getstr = nums.toString();
     var en = (getstr.length() + maxline - 1) / maxline;
     for (var i = 0; i < en; i++) {
       var sub = getstr.substring(i * maxline, (i + 1) * maxline);

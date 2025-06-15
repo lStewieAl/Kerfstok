@@ -7,9 +7,9 @@ import Toybox.Lang;
 var numset as Array<Number> = [];
 class RetrieveDelegate extends WatchUi.BehaviorDelegate {
   var from;
-  var nums as Array<Char>;
+  var nums as EntryData;
   var onscr = 4;
-  function initialize(n as Array<Char>) {
+  function initialize(n as EntryData) {
     nums = n;
     if (numset.size() < 1) {
       from = 0;

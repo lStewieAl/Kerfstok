@@ -16,11 +16,11 @@ class DialView extends WatchUi.View {
     : Gfx.FONT_TINY;
 
   const dialnumberfont = venusq2 ? Gfx.FONT_NUMBER_MEDIUM : Gfx.FONT_NUMBER_HOT;
-  var nums as Array<Char>;
+  var nums as EntryData;
 
   var variable;
   var timeoff = 0.0;
-  function initialize(numin as Array<Char>, vari) {
+  function initialize(numin as EntryData, vari) {
     View.initialize();
     variable = vari;
     nums = numin;
@@ -98,7 +98,7 @@ class DialView extends WatchUi.View {
     dc.clear();
     dc.setColor(Gfx.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 
-    var getstr = StringUtil.charArrayToString(nums);
+    var getstr = nums.toString();
     var en = (getstr.length() + maxline - 1) / maxline;
     for (var i = 0; i < en; i++) {
       var sub = getstr.substring(i * maxline, (i + 1) * maxline);

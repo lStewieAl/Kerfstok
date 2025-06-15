@@ -6,10 +6,10 @@ import Toybox.Lang;
 
 class AssignDelegate extends WatchUi.BehaviorDelegate {
   var from = 0;
-  var nums as Array<Char>;
+  var nums as EntryData;
   var onscr = 4;
 
-  function initialize(n as Array<Char>) {
+  function initialize(n as EntryData) {
     BehaviorDelegate.initialize();
     nums = n;
   }
@@ -29,7 +29,7 @@ class AssignDelegate extends WatchUi.BehaviorDelegate {
           if (was < 0) {
             numset.add(id);
           }
-          memnum[id] = [].addAll(nums);
+          memnum[id] = [].addAll(nums.nums);
         } else {
           if (was >= 0) {
             memnum[id] = [];

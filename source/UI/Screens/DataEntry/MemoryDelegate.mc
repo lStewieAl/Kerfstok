@@ -4,8 +4,8 @@ import Toybox.Lang;
 
 class MemoryDelegate extends WatchUi.BehaviorDelegate {
   var gegs;
-  var nums as Array<Char>;
-  function initialize(g, n as Array<Char>) {
+  var nums as EntryData;
+  function initialize(g, n as EntryData) {
     gegs = g;
     nums = n;
     BehaviorDelegate.initialize();

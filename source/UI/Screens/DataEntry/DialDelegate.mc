@@ -56,27 +56,27 @@ function calcer(nums as Array<Char>) as String? {
 }
 
 class DialDelegate extends WatchUi.BehaviorDelegate {
-  var nums as Array<Char>;
+  var nums as EntryData;
   var endcl;
   var saved as Array<String> = [];
 
   const POINT = '.';
-  function initialize(end, numin as Array<Char>) {
+  function initialize(end, data as EntryData) {
     endcl = end;
-    nums = numin;
+    nums = data;
     BehaviorDelegate.initialize();
   }
 
   function onBack() {
     if (nums.size() > 0) {
       if (!fromback) {
-        var str = StringUtil.charArrayToString(nums);
+        var str = nums.toString();
         if (saved.size() == 0 || !saved[saved.size() - 1].equals(str)) {
           saved.add(str);
         }
         fromback = true;
       }
-      nums = nums.slice(0, nums.size() - 1);
+      nums.pop();
       WatchUi.requestUpdate();
     } else {
       WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
@@ -92,13 +92,13 @@ class DialDelegate extends WatchUi.BehaviorDelegate {
       var rsq = x * x + y * y;
       fromback = false;
       if (rsq < 2500) {
-        var str = calcer(nums);
+        var str = calcer(nums.nums);
         if (str == null) {
           beep4();
           return false;
         }
 
-        var numstr = StringUtil.charArrayToString(nums);
+        var numstr = nums.toString();
         if (numstr.equals(str)) {
           if (endcl.storedata(numstr)) {
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
@@ -109,20 +109,17 @@ class DialDelegate extends WatchUi.BehaviorDelegate {
         }
 
         operated = false;
-        nums = str.toCharArray();
+        nums.nums = str.toCharArray();
         WatchUi.requestUpdate();
         return true;
       } else {
-        if (nums.size() < nummax) {
+        if (nums.nums.size() < nummax) {
           var arc = 180.0d * (1.0d - Math.atan2(x, y) / Math.PI);
-
-          if (arc < 18.0 || arc > 342.0) {
-            nums = nums.add('0');
-          } else {
-            nums = nums.add(
-              (Math.floor((arc + 18) / 36).toNumber() + 48).toChar()
-            );
+          var enteredNumber = '0';
+          if (arc >= 18.0 && arc <= 342.0) {
+            enteredNumber = (Math.floor((arc + 18) / 36).toNumber() + 48).toChar();
           }
+          nums.push(enteredNumber);
           WatchUi.requestUpdate();
         } else {
           beep1();
@@ -135,8 +132,8 @@ class DialDelegate extends WatchUi.BehaviorDelegate {
 
   function onNextPage() {
     if (!operated) {
-      if (nums.size()) {
-        var str = StringUtil.charArrayToString(nums);
+      if (nums.nums.size()) {
+        var str = nums.toString();
         if (saved.size() == 0 || !saved[saved.size() - 1].equals(str)) {
           saved.add(str);
         }
@@ -158,7 +155,7 @@ class DialDelegate extends WatchUi.BehaviorDelegate {
         beep2();
       } else {
         fromback = false;
-        nums = nums.add(POINT);
+        nums.addPoint();
         WatchUi.requestUpdate();
       }
     }
