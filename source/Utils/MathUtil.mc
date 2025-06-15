@@ -1,4 +1,4 @@
-using Toybox.Lang;
+import Toybox.Lang;
 using Toybox.System;
 using Toybox.Math;
 
@@ -103,7 +103,10 @@ function parse(ops, lenin) {
   return ops[0];
 }
 
-function haken(ops) {
+function haken(ops as Array<Char>?) {
+  if (ops == null) {
+    return null;
+  }
   var lit = 0;
   var left = new [ops.size() / 2 + 1];
   var uit = 0;
@@ -148,8 +151,8 @@ function haken(ops) {
 }
 
 const nopoint = 99999;
-function tokenize(chars, len) {
-  var ar = [];
+function tokenize(chars, len) as Array<Char>? {
+  var ar = [] as Array<Char>;
   var get = 0;
   var point = nopoint;
   var was = 0;
