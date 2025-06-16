@@ -67,8 +67,44 @@ class EntryData {
     return StringUtil.charArrayToString(nums);
   }
 
+  /**
+  * Determines if a decimal point '.' can be appended by iterating through the
+  * characters of the display string.
+  *
+  * @return {@code true} if a decimal point can be legally appended, {@code false} otherwise.
+  */
+  function canAppendDecimal() as Boolean {
+    // Handle null or empty input. An empty display can always start with a decimal (as "0.").
+    if (nums == null || nums.size() == 0) {
+      return true;
+    }
+
+    // Iterate backwards from the last character of the array.
+    for (var i = nums.size() - 1; i >= 0; i--) {
+      var currentChar = nums[i];
+
+      // If we find a decimal point, it belongs to the current number.
+      // We cannot add another one, so we return false immediately.
+      if (currentChar == '.') {
+        return false;
+      }
+
+      // If we find an operator, we have moved past the current number segment.
+      // Since we didn't find a '.' in it, it must be safe to add one. We can stop searching.
+      if (currentChar == '+' || currentChar == '-' || currentChar == '*' || currentChar == '/' || currentChar == '(' || currentChar == ')' || currentChar == '^') {
+        break; // Exit the loop
+      }
+    }
+
+    // If the loop finished (either by breaking or reaching the start),
+    // it means no decimal was found in the last number segment. It is safe to append one.
+    return true;
+  }
+
   function addPoint() as Void {
-    nums.add('.');
+    if (canAppendDecimal()) {
+      nums.add('.');
+    }
   }
 
   function addAll(arr as Array<Char>) as Array<Char> {

@@ -60,7 +60,6 @@ class DialDelegate extends WatchUi.BehaviorDelegate {
   var endcl;
   var saved as Array<String> = [];
 
-  const POINT = '.';
   function initialize(end, data as EntryData) {
     endcl = end;
     nums = data;

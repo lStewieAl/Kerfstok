@@ -55,8 +55,10 @@ class OperatorDelegate extends WatchUi.BehaviorDelegate {
 
           var chr = operators[mo].toCharArray();
           if (nums.size() + chr.size() <= nummax) {
-            nums.addAll(chr);
-            if (!(chr.size() == 1 && chr[0] == '.')) {
+            if (chr.size() == 1 && chr[0] == '.') {
+              nums.addPoint();
+            } else {
+              nums.addAll(chr);
               operated = true;
             }
           } else {
