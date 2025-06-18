@@ -131,111 +131,8 @@ function updateLastKnownIndexFromServer(dataSourceIndex, serverLastIndex) {
  * @param data The message received from the phone, typically an Array.
  */
 function processIncomingMessage(data) {
-  if (data instanceof Toybox.Lang.Array && data.size() > 0) {
-    var messageType = data[0] as Lang.Number;
-    switch (data.size()) {
-      case 1:
-        switch (messageType) {
-          case START:
-            startGlucoseStreaming();
-            break;
-          case STOPALARM:
-            AppSettings.isAlarmActive = false;
-            Communications.transmit([GOTSTOPALARM], null, new CommListener());
-            break;
-          default:
-            System.println("Unknown message of size 1: " + messageType);
-            break;
-        }
-
-      // --- Messages with two elements (command + payload) ---
-      case 2:
-        {
-          var payload = data[1];
-          switch (messageType) {
-            case COLORBLACK:
-              updateBackgroundColor(payload);
-              break;
-            case GLUCOSE:
-              updateGlucoseData(payload);
-              ackGlucose();
-              break;
-            case HEART:
-              heartrate(payload);
-              break;
-            case PUTLABELS:
-              storeLabels(payload);
-              break;
-            case PUTPRECISION:
-              storePrecisionValues(payload);
-              break;
-            case SHORTCUTS:
-              storeShortcuts(payload);
-              break;
-            case GETENDNUM:
-              // The phone is asking for our last known index.
-              if (payload == 0 && lowestchange[0] == null) {
-                // If we have no data for source 0, just acknowledge.
-                ackReceived();
-              } else {
-                sendLastKnownIndexToPhone(payload);
-              }
-              break;
-            default:
-              System.println("Key " + messageType + " num " + payload);
-              break;
-          }
-        }
-        break;
-
-      // --- Messages with three elements ---
-      case 3:
-        {
-          var dataSourceIndex = data[1];
-          var indexOrValue = data[2];
-          switch (messageType) {
-            case NUMS:
-              requestDataFromIndex(dataSourceIndex, indexOrValue);
-              break;
-            case SETENDNUM:
-              updateLastKnownIndexFromServer(dataSourceIndex, indexOrValue);
-              break;
-            case MORENUMS:
-              handleMoreDataNotification(dataSourceIndex, indexOrValue);
-              requestNextDataChunk(dataSourceIndex, indexOrValue);
-              break;
-            case DELETED:
-              onDataRecordsDeleted(dataSourceIndex, indexOrValue);
-              break;
-            default:
-              System.println("Key=" + messageType + " base=" + dataSourceIndex + " num2=" + indexOrValue);
-              break;
-          }
-        }
-        break;
-      case 4:
-        switch (messageType) {
-          case DELETE:
-            performDeletion(data[1], data[2], data[3]);
-            break;
-        }
-
-        break;
-      case 5:
-        switch (messageType) {
-          case PUTNUMS:
-            storeReceivedDataChunk(data[1], data[2], data[3], data[4]);
-            break;
-          default:
-            System.println("Unknown key for size 5: " + messageType);
-            break;
-        }
-
-      default:
-        System.println("Received message with unhandled length: " + data.size());
-        break;
-    }
-  } else {
+  // First, handle non-array data which represents simple, one-word commands.
+  if (!(data instanceof Toybox.Lang.Array)) {
     switch (data) {
       case LABELS:
         trans(LABELS, Time.now().value(), vars.slice(0, varnr));
@@ -243,10 +140,92 @@ function processIncomingMessage(data) {
       case CLEAR:
         clearnums();
         break;
-      default: {
-        System.println("Wrong message");
+      default:
+        System.println("Received unexpected non-array data: " + data);
         break;
-      }
     }
+    return; // Processing is complete for non-array data
+  }
+
+  // If data is an array but is empty, we cannot process it.
+  if (data.size() <= 0) {
+    System.println("Received an empty array message. Ignoring.");
+    return;
+  }
+
+  // The first element of the array is always the message type.
+  var messageType = data[0] as Lang.Number;
+
+  // Switch on the message type. This approach assumes the sending client
+  // provides the correct number of elements for each message type.
+  switch (messageType) {
+    // --- Messages with one element (command only) ---
+    case START:
+      startGlucoseStreaming();
+      break;
+    case STOPALARM:
+      AppSettings.isAlarmActive = false;
+      Communications.transmit([GOTSTOPALARM], null, new CommListener());
+      break;
+
+    // --- Messages with two elements (command + payload) ---
+    case COLORBLACK:
+      updateBackgroundColor(data[1]);
+      break;
+    case GLUCOSE:
+      updateGlucoseData(data[1]);
+      ackGlucose();
+      break;
+    case HEART:
+      heartrate(data[1]);
+      break;
+    case PUTLABELS:
+      storeLabels(data[1]);
+      break;
+    case PUTPRECISION:
+      storePrecisionValues(data[1]);
+      break;
+    case SHORTCUTS:
+      storeShortcuts(data[1]);
+      break;
+    case GETENDNUM:
+      var payload = data[1];
+      // The phone is asking for our last known index.
+      if (payload == 0 && lowestchange[0] == null) {
+        // If we have no data for source 0, just acknowledge.
+        ackReceived();
+      } else {
+        sendLastKnownIndexToPhone(payload);
+      }
+      break;
+
+    // --- Messages with three elements ---
+    case NUMS:
+      requestDataFromIndex(data[1], data[2]);
+      break;
+    case SETENDNUM:
+      updateLastKnownIndexFromServer(data[1], data[2]);
+      break;
+    case MORENUMS:
+      handleMoreDataNotification(data[1], data[2]);
+      requestNextDataChunk(data[1], data[2]);
+      break;
+    case DELETED:
+      onDataRecordsDeleted(data[1], data[2]);
+      break;
+
+    // --- Messages with four elements ---
+    case DELETE:
+      performDeletion(data[1], data[2], data[3]);
+      break;
+
+    // --- Messages with five elements ---
+    case PUTNUMS:
+      storeReceivedDataChunk(data[1], data[2], data[3], data[4]);
+      break;
+
+    default:
+      System.println("Unknown message type received: " + messageType);
+      break;
   }
 }
