@@ -19,6 +19,12 @@ class AskDelegate extends WatchUi.BehaviorDelegate {
     return true;
   }
 
+  function onNextPage() {
+    onResponse(0);
+   	WatchUi.popView(WatchUi.SLIDE_IMMEDIATE); 
+    return true;
+  }
+
   function onTap(clickEvent) {
     if (clickEvent.getType() == CLICK_TYPE_TAP) {
       var co = clickEvent.getCoordinates();
@@ -33,7 +39,7 @@ class AskDelegate extends WatchUi.BehaviorDelegate {
     return true;
   }
 
-  function onKey(keyEvent) {
+  function onKey(keyEvent as Toybox.WatchUi.KeyEvent) as Lang.Boolean {
     if (AppSettings.isAlarmActive) {
       stopalarm();
     }
@@ -41,10 +47,6 @@ class AskDelegate extends WatchUi.BehaviorDelegate {
   }
 
   function onPreviousPage() {
-    return true;
-  }
-
-  function onNextPage() {
     return true;
   }
   
