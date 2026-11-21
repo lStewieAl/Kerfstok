@@ -1,1 +1,4 @@
 bin/
+gen/
+external-mir/
+internal-mir/

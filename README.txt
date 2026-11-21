@@ -1,5 +1,5 @@
 
-Kerstok is watch app for certain Garmin with touchscreen. It can be downloaded from: https://apps.garmin.com/en-US/apps/b6348ccc-86d8-4780-8013-d9e19fed5260
+Kerfstok is watch app for certain Garmin with touchscreen. It can be downloaded from: https://apps.garmin.com/en-US/apps/b6348ccc-86d8-4780-8013-d9e19fed5260
 It should be used with Juggluco, https://www.juggluco.nl/Juggluco/index.html
 
 With it, you can enter numbers under a certain label on your watch. These numbers are sent to Juggluco.
@@ -18,10 +18,33 @@ https://www.juggluco.nl/Kerfstok/index.html
 For information about how to build a Garmin watch app, see:
 https://developer.garmin.com/connect-iq/connect-iq-basics/getting-started/#gettingstarted
 
-To build the app you need to turn off type checkings: 
-- When using Eclipse, you have to put  -l 2
-in Windows->Preferences->ConnectIQ->Compiler->"Compiler time options". See: 
-https://forums.garmin.com/developer/connect-iq/f/discussion/314861/sdk-4-1-6-generating-new-errors-and-warnings
-- In Visual Studio Code, you have to go to the Extensions (View->Extensions), Press on the cog symbol beside Monkey, select "Extension settings" and set "Type Check Level" to "Informative". 
+Building
+--------
+The app builds with any type check level, including strict (-l 3):
+
+  monkeyc -f monkey.jungle -d venu2 -o bin/Kerfstok.prg -y developer_key.der
+
+manifest.xml is generated from manifest.xml.in with `make` (define DEBUG in
+manifest.xml.in for the Kerfstok-d app id).
+
+Unit tests (tests/Tests.mc) run in the simulator:
+
+  monkeyc -f monkey.jungle -d venu2 -o bin/test.prg -y developer_key.der --unit-test
+  monkeydo bin/test.prg venu2 /t
+
+Source layout
+-------------
+source/App.mc     Application lifecycle, phone message listener, redraw timer.
+source/Comm       Messages exchanged with Juggluco (consts.mc is generated
+                  from Juggluco and must stay in sync with it).
+source/Core       Device families, screen helpers, haptics and glucose alarm,
+                  units, the dial calculator and date helpers.
+source/Data       Persisted state: logged records, labels, memory slots and
+                  shortcuts, the latest glucose reading, insulin on board.
+source/Sport      Sports list, activity recording and measurements.
+source/UI         One file per screen (view and its input delegate).
+
+Device-specific layout tweaks are selected by the DeviceFamily string in
+resources-<product>/strings.xml.
 
 Jaap Korthals Altes
