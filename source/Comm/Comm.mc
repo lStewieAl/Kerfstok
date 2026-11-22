@@ -249,6 +249,9 @@ module Comm {
       count = 360;
     }
     var history = SensorHistory.getHeartRateHistory({ :period => count });
+    if (history == null) {
+      return;
+    }
     // Oldest sample first.
     var samples = new [count];
     for (var i = count - 1; i >= 0; i--) {

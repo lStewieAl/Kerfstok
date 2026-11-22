@@ -2,6 +2,7 @@ import Toybox.Application;
 import Toybox.Communications;
 import Toybox.Lang;
 import Toybox.System;
+import Toybox.Time;
 import Toybox.Timer;
 import Toybox.WatchUi;
 
@@ -63,9 +64,13 @@ class KerfstokApp extends Application.AppBase {
     }
   }
 
+  // Restarting makes Juggluco resend everything, so it is only done when the
+  // readings actually stopped arriving.
   function onActive(state as Dictionary?) as Void {
-    if (Comm.streamStale || !Comm.streaming) {
+    if (!Comm.streaming || (Comm.streamStale && !Glucose.isArriving(Time.now().value()))) {
       Comm.startStream();
+    } else {
+      Comm.streamStale = false;
     }
   }
 

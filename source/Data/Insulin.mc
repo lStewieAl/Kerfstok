@@ -7,6 +7,7 @@ import Toybox.WatchUi;
 module Insulin {
   const WINDOW_SECONDS = 8 * 3600;
   const CACHE_SECONDS = 60;
+  const MIN_INTERVAL = 5;
   const PROJECTION_MINUTES = 10;
 
   // Units on board, and how much that changes over PROJECTION_MINUTES.
@@ -18,17 +19,18 @@ module Insulin {
   var _label as Number? = null;
 
   // Recalculating reads up to both full rings from flash, so the result is
-  // cached until it is a minute old or the records or labels change.
+  // cached until it is a minute old or the records or labels change. A burst
+  // of record messages from Juggluco changes the records on every message, so
+  // changes are picked up at most every MIN_INTERVAL seconds; the redraw
+  // timer catches the last one.
   function refresh(now as Number) as Void {
     var label = Labels.insulin;
-    if (
-      _computedAt >= 0 &&
-      now >= _computedAt &&
-      now - _computedAt < CACHE_SECONDS &&
-      _revision == Records.revision &&
-      _label == label
-    ) {
-      return;
+    if (_computedAt >= 0 && now >= _computedAt) {
+      var elapsed = now - _computedAt;
+      var changed = _revision != Records.revision || _label != label;
+      if (elapsed < MIN_INTERVAL || (elapsed < CACHE_SECONDS && !changed)) {
+        return;
+      }
     }
     _computedAt = now;
     _revision = Records.revision;

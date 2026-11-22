@@ -7,6 +7,9 @@ import Toybox.WatchUi;
 module Glucose {
   // Seconds a reading stays on screen.
   const MAX_AGE = 330;
+  // Juggluco sends a reading every minute; a longer gap means the stream
+  // stopped.
+  const STREAM_GAP = 180;
 
   var text as String = " ";
   var time as Number = 0;
@@ -36,6 +39,10 @@ module Glucose {
 
   function isRecent(now as Number) as Boolean {
     return age(now) < MAX_AGE;
+  }
+
+  function isArriving(now as Number) as Boolean {
+    return age(now) < STREAM_GAP;
   }
 
   // Short form for small displays, with the alarm marker.
