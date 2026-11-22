@@ -46,6 +46,7 @@ class KerfstokApp extends Application.AppBase {
 
   function onStop(state as Dictionary?) as Void {
     stopTimer();
+    Glucose.saveHistory();
     if (state != null && state[:suspend] == true) {
       // Not a real stop: keep everything and restart the phone stream in
       // onStart(). Transmitting from this path is unreliable.

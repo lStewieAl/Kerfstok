@@ -29,8 +29,7 @@ class AskView extends WatchUi.View {
   }
 }
 
-// Back (or swipe right) answers yes so that pressing back twice quits;
-// next page answers no. Taps on the lower half pick the side tapped.
+// Back (or swipe right) answers yes; next page answers no. Taps on the lower half pick the side tapped.
 // Subclasses implement onAnswer().
 class AskDelegate extends BaseDelegate {
   function initialize() {
@@ -64,20 +63,6 @@ class AskDelegate extends BaseDelegate {
   private function answer(yes as Boolean) as Void {
     Ui.pop();
     onAnswer(yes);
-  }
-}
-
-class QuitDelegate extends AskDelegate {
-  function initialize() {
-    AskDelegate.initialize();
-  }
-
-  function onAnswer(yes as Boolean) as Void {
-    if (yes) {
-      SportSession.stop();
-      // Pops the glucose screen, which ends the app.
-      Ui.pop();
-    }
   }
 }
 

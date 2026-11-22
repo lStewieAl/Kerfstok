@@ -275,6 +275,29 @@ function glucoseUpdateFormatsAndRaisesAlarms(logger as Logger) as Boolean {
 }
 
 (:test)
+function glucoseHistoryKeepsRecentReadings(logger as Logger) as Boolean {
+  Glucose.historyTimes = [] as Array<Number>;
+  Glucose.historyValues = [] as Array<Float>;
+  Glucose.unit = 0;
+  for (var i = 0; i < Glucose.HISTORY_SIZE + 5; i++) {
+    Glucose.addToHistory(1000 + i * 60, 100.0 + i);
+  }
+  // Older and repeated readings are ignored.
+  Glucose.addToHistory(1000, 50.0);
+  Test.assertEqual(Glucose.historyTimes.size(), Glucose.HISTORY_SIZE);
+  Test.assertEqual(Glucose.historyTimes[0], 1000 + 5 * 60);
+  Glucose.saveHistory();
+  Glucose.loadHistory();
+  Test.assertEqual(Glucose.historyValues.size(), Glucose.HISTORY_SIZE);
+  Glucose.setUnit(1);
+  var mmol = Glucose.historyValues[0];
+  Glucose.setUnit(0);
+  Glucose.historyTimes = [] as Array<Number>;
+  Glucose.historyValues = [] as Array<Float>;
+  return mmol > 5.8 && mmol < 5.9;
+}
+
+(:test)
 function labelsFindTheInsulinLabel(logger as Logger) as Boolean {
   var saved = Labels.names;
   Labels.setNames(["Carbs", "Lantus", "NovoRapid"]);

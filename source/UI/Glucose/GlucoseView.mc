@@ -3,6 +3,7 @@ import Toybox.Lang;
 import Toybox.System;
 import Toybox.Time;
 import Toybox.Time.Gregorian;
+import Toybox.Timer;
 import Toybox.WatchUi;
 
 // Home screen: time, date, glucose with trend, insulin on board, battery and
@@ -105,12 +106,44 @@ class GlucoseView extends WatchUi.View {
 }
 
 class GlucoseDelegate extends BaseDelegate {
+  // Maximum milliseconds between the taps of a double tap.
+  const DOUBLE_TAP_MS = 400;
+  // Maximum milliseconds between the presses of a double back press.
+  const DOUBLE_BACK_MS = 600;
+
+  private var _lastTap as Number? = null;
+  private var _lastBack as Number? = null;
+  // On Edge devices a single tap opens the menu once no second tap followed.
+  private var _menuTimer as Timer.Timer? = null;
+
   function initialize() {
     BaseDelegate.initialize();
   }
 
+  // The back behavior also comes from a swipe right, which must not quit, so
+  // it is ignored here and the back button is handled in onKeyPressed().
   function onBack() as Boolean {
-    Ui.push(new AskView("", "Quit?"), new QuitDelegate());
+    return true;
+  }
+
+  // Only called for physical buttons. Pressing back twice quits.
+  function onKeyPressed(event as WatchUi.KeyEvent) as Boolean {
+    if (event.getKey() != WatchUi.KEY_ESC) {
+      return false;
+    }
+    if (silenceAlarm()) {
+      return true;
+    }
+    var now = System.getTimer();
+    var last = _lastBack;
+    if (last != null && now - last < DOUBLE_BACK_MS) {
+      _lastBack = null;
+      SportSession.stop();
+      // Popping the glucose screen ends the app.
+      Ui.pop();
+    } else {
+      _lastBack = now;
+    }
     return true;
   }
 
@@ -125,8 +158,22 @@ class GlucoseDelegate extends BaseDelegate {
     if (silenceAlarm()) {
       return true;
     }
+    var now = System.getTimer();
+    var last = _lastTap;
+    if (last != null && now - last < DOUBLE_TAP_MS) {
+      _lastTap = null;
+      if (_menuTimer != null) {
+        (_menuTimer as Timer.Timer).stop();
+      }
+      Ui.push(new GlucoseGraphView(), new GlucoseGraphDelegate());
+      return true;
+    }
+    _lastTap = now;
     if (Device.isEdge()) {
-      openMenu();
+      if (_menuTimer == null) {
+        _menuTimer = new Timer.Timer();
+      }
+      (_menuTimer as Timer.Timer).start(method(:openMenu), DOUBLE_TAP_MS, false);
     }
     return true;
   }
@@ -136,7 +183,8 @@ class GlucoseDelegate extends BaseDelegate {
     return true;
   }
 
-  private function openMenu() as Void {
+  function openMenu() as Void {
+    _lastTap = null;
     Ui.push(new MainMenuView(), new MainMenuDelegate());
   }
 
